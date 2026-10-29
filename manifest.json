@@ -1,0 +1,14 @@
+{
+  "name": "TOEFL 每日打卡",
+  "short_name": "TOEFL打卡",
+  "description": "托福每日训练打卡：单词、句子、文章、周计划与复盘",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#15171f",
+  "theme_color": "#5e1f2e",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}
