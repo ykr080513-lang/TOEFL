@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#5e1f2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>TOEFL 每日打卡</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<style>
+:root{
+  --bg:#15171f;--panel:#1d2130;--line:rgba(146,168,204,.16);
+  --wine:#7a2736;--wineD:#471722;--wineL:#d76a7c;
+  --mist:#35425f;--mistL:#92a8cc;
+  --paper:#f2e9d3;--kraft:#c9b184;--ink:#372c1d;
+  --txt:#eae5d6;--dim:#b0a896;--ok:#7fb98a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.75 -apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:
+ radial-gradient(900px 520px at 12% -6%,rgba(122,39,54,.40),transparent 62%),
+ radial-gradient(820px 600px at 102% 18%,rgba(53,66,95,.38),transparent 62%),
+ radial-gradient(700px 520px at 50% 112%,rgba(122,39,54,.20),transparent 60%)}
+header{position:sticky;top:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:10px 18px;background:rgba(21,23,31,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.brand{font-weight:700;letter-spacing:.5px}.brand b{color:var(--wineL)}
+.hud{display:flex;gap:8px;align-items:center;font-size:13px}
+.chip{padding:3px 10px;border-radius:999px;background:var(--panel);border:1px solid var(--line)}
+.chip.fire{color:var(--wineL);font-weight:600}
+.mini{padding:4px 12px;border-radius:999px;border:1px solid rgba(215,106,124,.4);background:var(--wineD);color:var(--wineL);cursor:pointer;font-size:12px}
+#tabs{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding:12px 8px}
+#tabs button{border:1px solid var(--line);background:var(--panel);color:var(--dim);padding:7px 13px;border-radius:999px;cursor:pointer;font-size:14px}
+#tabs button.on{background:linear-gradient(135deg,var(--wine),var(--wineD));color:#fff;border-color:transparent;box-shadow:0 4px 14px rgba(122,39,54,.45)}
+main{max-width:920px;margin:0 auto 90px;padding:0 16px}
+#banner{max-width:920px;margin:8px auto 0;padding:8px 16px;border-radius:10px;font-size:14px;display:none;text-align:center}
+#banner.warn{display:block;background:linear-gradient(135deg,rgba(122,39,54,.6),rgba(71,23,34,.6));border:1px solid rgba(215,106,124,.4)}
+#banner.done{display:block;background:rgba(53,66,95,.55);border:1px solid rgba(146,168,204,.35)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin:14px 0}
+h2{font-size:18px;margin:0 0 10px}h3{font-size:15px;margin:14px 0 6px}
+.mut{color:var(--dim);font-size:13px}
+.btn{padding:9px 18px;border-radius:999px;border:0;cursor:pointer;font-size:14px;color:#fff;background:linear-gradient(135deg,var(--wine),var(--wineD));box-shadow:0 4px 14px rgba(122,39,54,.4)}
+.btn:active{transform:scale(.97)}
+.btn.blue{background:linear-gradient(135deg,var(--mist),#242c42);box-shadow:0 4px 14px rgba(53,66,95,.4)}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--dim);box-shadow:none}
+.paper{background:linear-gradient(180deg,#f4ecd9,#eadcb9);color:var(--ink);border-radius:10px;border:1px solid #d8c69c;box-shadow:0 12px 32px rgba(0,0,0,.45);position:relative;padding:26px 28px;font-family:Georgia,"Times New Roman","Noto Serif SC","Songti SC",serif;overflow:hidden}
+.paper::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;mix-blend-mode:multiply;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/><feColorMatrix values='0 0 0 0 .62 0 0 0 0 .55 0 0 0 0 .42 0 0 0 .18 0'/></filter><rect width='140' height='140' filter='url(%23n)'/></svg>")}
+.paper p{margin:.9em 0;line-height:1.9}
+.paper b{color:#7a2736}
+.term{display:inline-block;margin:2px 6px 2px 0;padding:1px 10px;border-radius:999px;background:rgba(122,39,54,.12);border:1px solid rgba(122,39,54,.3);color:#6b2433;font-size:13px}
+.ring{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;margin:0 auto}
+.ring>button{width:112px;height:112px;border-radius:50%;border:0;cursor:pointer;background:linear-gradient(135deg,var(--wine),var(--wineD));color:#fff;font-size:17px;font-weight:700;box-shadow:0 6px 20px rgba(122,39,54,.5)}
+.hero{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+.hero .info{flex:1;min-width:220px}
+.task{display:flex;align-items:flex-start;gap:10px;padding:9px 10px;border-radius:10px;margin:6px 0;background:rgba(53,66,95,.18);border:1px solid var(--line)}
+.task.done{background:rgba(127,185,138,.12);border-color:rgba(127,185,138,.35)}
+.task input{margin-top:5px;accent-color:#d76a7c;transform:scale(1.2)}
+.task .dur{margin-left:auto;color:var(--dim);font-size:12px;white-space:nowrap}
+.wcard{text-align:center;padding:30px 20px}
+.wcard .w{font-size:34px;font-weight:700;font-family:Georgia,serif;word-break:break-word}
+.wcard .pos{color:#8a6f3f;font-size:13px;letter-spacing:1px}
+.wcard .def{font-size:16px;margin-top:10px}
+.wcard .ex{margin-top:12px;font-style:italic;color:#5c4a2e;font-size:14px}
+.wcard .ex b{color:#7a2736;font-style:normal}
+.opt{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px}
+.opt button{padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--mist);color:#fff;cursor:pointer;font-size:15px}
+.opt button:hover{filter:brightness(1.15)}
+.bar{height:8px;border-radius:99px;background:#2a2f3f;overflow:hidden;margin:8px 0}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--wineL),var(--wine))}
+.wk{border-collapse:collapse;width:100%;font-size:13px}
+.wk td{border-top:1px solid var(--line);padding:10px 8px;vertical-align:top}
+.wk .dow{color:var(--wineL);font-weight:600;white-space:nowrap}
+.wk tr.today{background:rgba(122,39,54,.14)}
+textarea,input[type=text],input[type=time],select{width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:#171a26;color:var(--txt);font:inherit;margin:3px 0}
+.stg{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px}
+.stg>div{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--panel);cursor:pointer}
+.stg>div:hover{border-color:var(--wineL)}
+.stg b{color:var(--wineL)}
+.snt{padding:14px 16px;border-radius:10px;background:rgba(53,66,95,.16);border:1px solid var(--line);margin:8px 0}
+.snt .en{font-family:Georgia,serif;font-size:16px;line-height:1.8}
+.snt .en b{color:var(--wineL)}
+.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--wineD);border:1px solid var(--wineL);color:#fff;padding:10px 20px;border-radius:999px;z-index:99;opacity:0;transition:.3s;pointer-events:none;max-width:88vw;text-align:center}
+.toast.show{opacity:1}
+@keyframes flick{0%,100%{transform:scale(1)}50%{transform:scale(1.12) rotate(-3deg)}}
+.fire{display:inline-block;animation:flick 1.6s infinite}
+@media(max-width:720px){
+ #tabs{position:fixed;bottom:0;left:0;right:0;background:rgba(21,23,31,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);justify-content:flex-start;overflow-x:auto;padding:8px 10px;z-index:50;padding-bottom:calc(8px + env(safe-area-inset-bottom))}
+ #tabs button{flex:0 0 auto;padding:6px 11px;font-size:13px}
+ main{padding:0 12px}
+ .opt{grid-template-columns:1fr}
+ .hero{gap:14px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">TOEFL <b>每日打卡</b></div>
+  <div class="hud">
+    <span class="chip fire"><span class="fire">🔥</span> <b id="streakN">0</b> 天</span>
+    <span class="chip">⭐ <b id="xpN">0</b></span>
+    <button class="mini" id="installBtn" style="display:none">安装到本机</button>
+  </div>
+</header>
+<div id="banner"></div>
+<nav id="tabs"></nav>
+<main id="app"></main>
+<div class="toast" id="toast"></div>
+<script>
+/* ============ 1. 词库（内置 240+ 核心词；用 words.json 可扩到 10000） ============ */
+const WORDS=[
+["abandon","v.","放弃；抛弃","The crew abandoned the sinking ship."],
+["abrupt","adj.","突然的；陡峭的","The climate shift was abrupt, not gradual."],
+["accelerate","v.","加速","Heat accelerates the decay of organic matter."],
+["accommodate","v.","容纳；为…提供空间","The hall accommodates five hundred students."],
+["accumulate","v.","积累；积聚","Sediments accumulate on the ocean floor."],
+["accurate","adj.","精确的；准确的","Accurate records date back to 1659."],
+["acknowledge","v.","承认；致谢","The author acknowledges the debate is unresolved."],
+["acquire","v.","获得；习得","Infants acquire language with remarkable speed."],
+["adapt","v.","适应；改编","Desert plants adapt to extreme dryness."],
+["adequate","adj.","足够的；合格的","The rainfall was barely adequate for farming."],
+["adhere","v.","粘附；坚持","The paint failed to adhere to the wet surface."],
+["adjacent","adj.","邻近的；毗邻的","The library is adjacent to the laboratory."],
+["advocate","v.","提倡；拥护","Many economists advocate a carbon tax."],
+["aesthetic","adj.","美学的；审美的","The design balances function and aesthetic appeal."],
+["alleviate","v.","减轻；缓解","Irrigation alleviated the effects of the drought."],
+["allocate","v.","分配；拨给","The city allocated funds for flood control."],
+["alter","v.","改变；更改","Farming altered the landscape forever."],
+["ambiguous","adj.","模棱两可的；模糊的","The fossil record remains ambiguous on this point."],
+["ample","adj.","充足的；宽裕的","The region enjoys ample sunlight year-round."],
+["analogous","adj.","类似的；可类比的","A heart is analogous to a pump."],
+["ancestor","n.","祖先；先祖","These bones belonged to a common ancestor."],
+["anticipate","v.","预期；预料","Researchers anticipated strong public resistance."],
+["apparent","adj.","明显的；表面上的","The gap between rich and poor became apparent."],
+["apply","v.","应用；申请","The theory applies to most ecosystems."],
+["approach","n.","方法 v. 接近","She took a scientific approach to cooking."],
+["arbitrary","adj.","任意的；武断的","The border was drawn along arbitrary lines."],
+["arid","adj.","干旱的；贫瘠的","Arid lands cover a third of the continent."],
+["array","n.","一系列；大批","The museum displays an array of artifacts."],
+["ascend","v.","上升；攀登","The hikers ascend the ridge before sunrise."],
+["assemble","v.","集合；组装","Workers assemble the parts on a moving line."],
+["assert","v.","断言；坚称","The paper asserts that sleep aids memory."],
+["assess","v.","评估；评定","Teachers assess progress through weekly quizzes."],
+["assume","v.","假定；承担","Let us assume the trend continues."],
+["attribute","v.","把…归因于","Scholars attribute the decline to overfishing."],
+["authentic","adj.","真实的；可靠的","The letter is an authentic Civil War document."],
+["autonomous","adj.","自治的；自主的","The region became autonomous in 1998."],
+["avert","v.","避免；转移","Engineers built barriers to avert disaster."],
+["abundant","adj.","丰富的；充裕的","Fish were once abundant in this bay."],
+["attain","v.","达到；实现","The village attained self-sufficiency by 1900."],
+["barren","adj.","贫瘠的；荒芜的","Overgrazing left the hillsides barren."],
+["barrier","n.","障碍；屏障","Mountains formed a natural barrier to trade."],
+["beneficial","adj.","有益的","Some bacteria are beneficial to digestion."],
+["bias","n.","偏见 v. 使有偏差","The survey suffers from selection bias."],
+["bizarre","adj.","怪异的；离奇的","The creature has a bizarre mating dance."],
+["blend","v.","混合；融合","The recipe blends local and imported spices."],
+["boost","v.","提高；推动","Advertising boosted sales by thirty percent."],
+["boundary","n.","边界；界线","The river marks the city boundary."],
+["breed","v.","繁殖；饲养","Farmers breed cattle for a mild temper."],
+["brief","adj.","简短的 n. 摘要","The professor gave a brief summary."],
+["bulk","n.","大部分；体积","The bulk of the evidence supports the theory."],
+["burden","n.","负担；重担","Debt became a heavy burden for farmers."],
+["cease","v.","停止；终止","The factory ceased production in 1971."],
+["celestial","adj.","天体的；天空的","Ancient sailors steered by celestial signs."],
+["cite","v.","引用；举例","The report cites three independent studies."],
+["classify","v.","分类；归类","Biologists classify it as a distinct species."],
+["coincide","v.","同时发生；相符","The festival coincides with the harvest moon."],
+["collapse","v./n.","倒塌；崩溃","The bridge collapsed under the weight of snow."],
+["collide","v.","碰撞；冲突","Continents collide and thrust up mountains."],
+["communal","adj.","公共的；共有的","The village shares a communal oven."],
+["compact","adj.","紧凑的；结实的","A compact design saved precious cargo space."],
+["comparable","adj.","可比较的；类似的","The results are comparable across both groups."],
+["compensate","v.","补偿；弥补","Higher yields compensated for the dry summer."],
+["compose","v.","组成；撰写","Water composes sixty percent of your body."],
+["comprehensive","adj.","全面的；综合的","The agency issued a comprehensive report."],
+["comprise","v.","包含；由…组成","Twelve islands comprise the archipelago."],
+["conceal","v.","隐藏；掩盖","Snow concealed the entrance to the cave."],
+["condense","v.","凝结；压缩","Vapor condenses into droplets on the glass."],
+["conduct","v.","进行；传导 n. 行为","The team conducted experiments over two years."],
+["confine","v.","限制；禁闭","Farmers confine the animals at night."],
+["conflict","n.","冲突 v. 抵触"," grazing and mining interests came into conflict.",""],
+["consequent","adj.","随之发生的","Flooding and consequent erosion ruined the fields."],
+["conserve","v.","保护；节约","New rules conserve water during the drought."],
+["constitute","v.","构成；组成","Women constitute half the workforce."],
+["constrain","v.","限制；约束","Budget limits constrained the design."],
+["contaminate","v.","污染","Chemicals contaminated the groundwater."],
+["contemplate","v.","沉思；考虑","She contemplated a career in medicine."],
+["contend","v.","主张；竞争","Critics contend the data are incomplete."],
+["contradict","v.","反驳；与…矛盾","The results contradict earlier findings."],
+["contrast","n./v.","对比；对照","Contrast the two maps side by side."],
+["contribute","v.","贡献；促成","Volcanoes contribute sulfur to the air."],
+["controversy","n.","争议；论战","The mural sparked public controversy."],
+["conventional","adj.","传统的；常规的","Conventional farming relies on plows."],
+["converge","v.","汇聚；聚集","The two rivers converge near the delta."],
+["convert","v.","转变；改造","The mill was converted into apartments."],
+["convey","v.","传达；运送","Words cannot convey her gratitude."],
+["coordinate","v.","协调 n. 坐标","A central office coordinates the volunteers."],
+["cope","v.","应对；处理","Farmers cope with unpredictable weather."],
+["crucial","adj.","关键的；至关重要的","Timing is crucial to the experiment."],
+["decay","v./n.","腐烂；衰败","Moisture speeds the decay of wood."],
+["decline","v./n.","下降；衰退","Salmon stocks declined sharply after 1990."],
+["deduce","v.","推断；演绎","We deduced the age of the site from pottery."],
+["deem","v.","认为；视为","The land was deemed unfit for farming."],
+["deficient","adj.","缺乏的；不足的","The soil is deficient in nitrogen."],
+["degrade","v.","退化；降低","Plastic waste degrades very slowly."],
+["deliberate","adj.","故意的 v. 深思","The error was a deliberate test."],
+["delicate","adj.","精致的；脆弱的","Coral reefs are delicate ecosystems."],
+["demonstrate","v.","证明；演示","The study demonstrates a clear link."],
+["denote","v.","表示；标志着","Red bars denote below-average years."],
+["dense","adj.","密集的；浓密的","A dense fog covered the harbor."],
+["deplete","v.","耗尽；使枯竭","Overhunting depleted the herds."],
+["deposit","n.","沉积物 v. 沉积","Mineral deposits formed in the rift."],
+["derive","v.","源自；获得","The word derives from an ancient tongue."],
+["designate","v.","指定；命名","The park was designated a reserve."],
+["detect","v.","察觉；探测","Sensors detect tiny shifts in temperature."],
+["deteriorate","v.","恶化；变质","His eyesight deteriorated over the winter."],
+["determine","v.","确定；决定","Soil tests determine the nutrient levels."],
+["deviate","v.","偏离；背离","Results deviate little from the prediction."],
+["devise","v.","设计；发明","They devised a simple irrigation system."],
+["diffuse","v.","扩散 adj. 弥漫的","Odors diffuse through the entire room."],
+["dilemma","n.","困境；两难","The city faces a difficult dilemma."],
+["diminish","v.","减少；削弱","Supply diminishes as demand grows."],
+["disperse","v.","分散；传播","Wind disperses the seeds widely."],
+["displace","v.","取代；使迁移","Dams displaced thousands of villagers."],
+["dispute","n./v.","争论；争执","The border dispute lasted for decades."],
+["disrupt","v.","扰乱；中断","Storms disrupted shipping for weeks."],
+["distinct","adj.","明显的；不同的","Two distinct dialects emerged."],
+["distort","v.","扭曲；歪曲","Cheap lenses distort the image."],
+["distribute","v.","分布；分配","Charities distribute food to remote areas."],
+["diverse","adj.","多样的；不同的","A diverse forest resists disease."],
+["divert","v.","转移；改道","The canal diverts water to the plains."],
+["domain","n.","领域；范围","Light belongs to the domain of physics."],
+["dominate","v.","支配；占主导","Oaks dominate the northern slopes."],
+["drastic","adj.","激烈的；严厉的","Drastic measures saved the currency."],
+["dwell","v.","居住；存在于","Nomadic tribes dwell on the steppe."],
+["elaborate","adj.","复杂的 v. 详述","The courtship dance is remarkably elaborate."],
+["elicit","v.","引出；诱出","The survey elicited a wide range of views."],
+["eliminate","v.","消除；淘汰","Filters eliminate most impurities."],
+["embark","v.","着手；上船","The team embarked on a five-year survey."],
+["embed","v.","嵌入；深植","Fossils are embedded in the limestone."],
+["emit","v.","发出；排放","Volcanoes emit ash and sulfur."],
+["emphasize","v.","强调","The lecture emphasized cause and effect."],
+["endeavor","n./v.","努力；尝试","Mapping the genome was a vast endeavor."],
+["endure","v.","忍受；持续","These walls have endured six centuries."],
+["enhance","v.","增强；提高","Music may enhance concentration."],
+["enrich","v.","使丰富；使肥沃","Floods enrich the soil with silt."],
+["ensue","v.","接着发生","Chaos ensued after the announcement."],
+["equilibrium","n.","平衡；均衡","Prices settle at a new equilibrium."],
+["erode","v.","侵蚀；腐蚀","Waves erode the soft cliff base."],
+["essential","adj.","必不可少的","Rain is essential to the harvest."],
+["estimate","v./n.","估计；估算","We estimate the population at two million."],
+["evaporate","v.","蒸发；消失","Shallow lakes evaporate quickly in summer."],
+["evoke","v.","唤起；引起","The smell evokes childhood memories."],
+["evolve","v.","进化；演变","Whales evolved from land mammals."],
+["exaggerate","v.","夸大","Sailors tend to exaggerate storm tales."],
+["exceed","v.","超过；超出","Demand now exceeds the water supply."],
+["excel","v.","擅长；胜过","The school excels in the sciences."],
+["exclude","v.","排除；不包括","The sample excludes smokers."],
+["exert","v.","施加；运用","Gravity exerts a constant pull."],
+["exhibit","v.","展示；表现出","The patient exhibited unusual symptoms."],
+["expand","v.","扩大；膨胀","The city expanded along the river."],
+["explicit","adj.","明确的；清楚的","The contract gives explicit instructions."],
+["exploit","v.","利用；开发","Farmers exploit the rich volcanic soil."],
+["expose","v.","暴露；揭露","The rocks expose layers of ancient lava."],
+["extract","v.","提取；取出","Bees extract nectar from the flowers."],
+["facilitate","v.","促进；使便利","New tools facilitate rapid analysis."],
+["feasible","adj.","可行的","A canal route seemed technically feasible."],
+["fertile","adj.","肥沃的；多产的","Fertile mud made the valley a breadbasket."],
+["flourish","v.","繁荣；茂盛","Trade flourished along the route."],
+["fluctuate","v.","波动；起伏","Grain prices fluctuate with the weather."],
+["forage","v.","觅食 n. 饲料","Goats forage on sparse hillside grass."],
+["formidable","adj.","可怕的；强大的","The desert posed a formidable barrier."],
+["fossil","n.","化石","The fossil record is incomplete but revealing."],
+["fragment","n.","碎片 v. 碎裂","Fragments of pottery litter the site."],
+["framework","n.","框架；体系","The theory offers a useful framework."],
+["fundamental","adj.","基本的；根本的","Reading is a fundamental skill."],
+["generate","v.","产生；引起","Dams generate most of the electricity."],
+["gradual","adj.","逐渐的","The change was gradual, spanning centuries."],
+["guarantee","v./n.","保证；担保","No policy can guarantee success."],
+["habitat","n.","栖息地","Wetlands are a key habitat for birds."],
+["halt","v./n.","停止；阻止","Snow halted construction for a month."],
+["hazard","n.","危险；危害","Flooding is a constant hazard here."],
+["hence","adv.","因此；由此","The soil is salty; hence the poor yields."],
+["hostile","adj.","敌对的；不利的","The desert is hostile to most crops."],
+["humidity","n.","湿度","High humidity slows evaporation."],
+["hypothesis","n.","假说；假设","The data support our hypothesis."],
+["identical","adj.","完全相同的","The twins wore identical coats."],
+["ignite","v.","点燃；引发","A spark ignited the dry grass."],
+["illustrate","v.","说明；图解","One example will illustrate the point."],
+["imitate","v.","模仿","Young birds imitate their parents' calls."],
+["immense","adj.","巨大的","The glacier covers an immense area."],
+["immune","adj.","免疫的；不受影响的","Vaccines make children immune to measles."],
+["impair","v.","损害；削弱","Alcohol impairs judgment and balance."],
+["implement","v.","实施 n. 工具","The city implemented the plan in stages."],
+["imply","v.","暗示；意味着","A rise in prices implies scarce supply."],
+["impose","v.","强加；征收","The state imposed a tax on exports."],
+["incentive","n.","激励；诱因","Bonuses gave workers an incentive."],
+["incorporate","v.","包含；吸收","The design incorporates local materials."],
+["indicate","v.","表明；指示","Rings indicate the age of a tree."],
+["indigenous","adj.","本地的；土著的","Indigenous crops suited the dry climate."],
+["induce","v.","诱导；引起","Warm currents induce fog at the coast."],
+["inevitable","adj.","不可避免的","Some delays were inevitable."],
+["infer","v.","推断；推论","We can infer climate from tree rings."],
+["ingenious","adj.","巧妙的","An ingenious lock guards the gate."],
+["inhabit","v.","居住于；栖息于","Rare bats inhabit the cave."],
+["inherent","adj.","固有的；内在的","Risk is inherent in exploration."],
+["inhibit","v.","抑制；阻碍","Cold inhibits the growth of most plants."],
+["initiate","v.","开始；发起","The council initiated a planting scheme."],
+["insight","n.","洞察；深刻理解","The diary offers insights into daily life."],
+["integral","adj.","不可缺少的","Fire is integral to this ecosystem."],
+["intense","adj.","强烈的；剧烈的","The storm brought intense rainfall."],
+["interact","v.","相互作用","Predator and prey interact closely."],
+["interfere","v.","干涉；干扰","Noise interferes with whale calls."],
+["interpret","v.","解释；口译","How should we interpret this pattern?"],
+["intervene","v.","干预；介入","The government intervened in the market."],
+["intricate","adj.","复杂精细的","The weave is intricate and colorful."],
+["intrinsic","adj.","内在的；固有的","Curiosity seems intrinsic to children."],
+["invade","v.","侵入；侵袭","Weeds invade disturbed soil."],
+["isolate","v.","使孤立；分离","Mountains isolate the valley villages."],
+["justify","v.","证明…有理","Results justify the extra cost."],
+["keen","adj.","敏锐的；热切的","She has a keen eye for detail."],
+["launch","v.","发起；发射","The agency launched a new satellite."],
+["legislation","n.","法律；立法","Tough legislation protected the wetlands."],
+["legitimate","adj.","合法的；正当的","Their concerns are entirely legitimate."],
+["linger","v.","逗留；持续","The scent of rain lingers in the air."],
+["luminous","adj.","发光的；明亮的","Jellyfish drift like luminous lanterns."],
+["magnify","v.","放大；加剧","Lenses magnify the tiny structures."],
+["maintain","v.","维持；保养","Farmers maintain the terraces by hand."],
+["manipulate","v.","操纵；巧妙处理","Do not manipulate the raw data."],
+["marginal","adj.","边缘的；微小的","The land yields only marginal profits."],
+["mature","v.","成熟 adj. 成熟的","The fruit matures late in autumn."],
+["meager","adj.","贫乏的；少量的","The soil gives a meager harvest."],
+["migrate","v.","迁徙；移居","Wildebeest migrate with the rains."],
+["mimic","v.","模仿","Some insects mimic dead leaves."],
+["modify","v.","修改；调整","Engineers modified the bridge design."],
+["monitor","v.","监测 n. 显示器","Rangers monitor the herd each spring."],
+["mutual","adj.","相互的","The partnership brought mutual benefits."],
+["negate","v.","否定；取消","Higher costs negate the savings."],
+["negligible","adj.","可忽略的；微不足道的","The error was too negligible to matter."],
+["notable","adj.","显著的；著名的","A notable exception is the fig tree."],
+["notion","n.","观念；想法","The notion of wilderness is fairly recent."],
+["nourish","v.","滋养；培育","The river nourishes the plain."],
+["numerous","adj.","众多的","Numerous studies confirm the effect."],
+["obtain","v.","获得；得到","Settlers obtained land along the river."],
+["omit","v.","省略；遗漏","Do not omit the control group."],
+["orbit","v./n.","沿轨道运行；轨道","The probe orbits the comet."],
+["originate","v.","起源；发源","The custom originates in medieval times."],
+["outline","v./n.","概述；轮廓","The report outlines three possible causes."],
+["overcome","v.","克服","They overcame the shortage by rationing."],
+["overlap","v./n.","重叠","The two ranges overlap in the north."],
+["overwhelming","adj.","压倒性的","The evidence is overwhelming."],
+["paradox","n.","悖论；矛盾","The paradox puzzled early economists."],
+["parallel","adj. 平行的 n. 相似之处","The streets run parallel to the shore."],
+["partial","adj.","部分的；偏袒的","We have only partial records."],
+["participate","v.","参与","Residents participate in the cleanup."],
+["peculiar","adj.","特有的；奇怪的","The drought has a peculiar pattern."],
+["perceive","v.","感知；察觉","Fish perceive pressure waves."],
+["perpetual","adj.","永久的；持续的","Some mountain snows are perpetual."],
+["persist","v.","坚持；持续","The fog persists until midday."],
+["perspective","n.","视角；观点","History offers a longer perspective."],
+["persuade","v.","说服","Data persuaded the skeptical council."],
+["phenomenon","n.","现象","Auroras are a polar phenomenon."],
+["pioneer","n./v.","先驱；开拓","Women pioneered the early settlement."],
+["plausible","adj.","貌似合理的","Both explanations sound plausible."],
+["plunge","v.","骤降；跳入","Temperatures plunged overnight."],
+["pollinate","v.","授粉","Bees pollinate a third of our crops."],
+["ponder","v.","思考；沉思","Scientists ponder the cause of the silence."],
+["portion","n.","一部分","A small portion of the coast remains wild."],
+["precede","v.","先于；在…之前","Warming preceded the extinction."],
+["precise","adj.","精确的","Precise dates came from tree rings."],
+["predator","n.","捕食者","Wolves are apex predators."],
+["predominant","adj.","占主导的","Oak is the predominant tree here."],
+["preliminary","adj.","初步的","Preliminary results look promising."],
+["preserve","v.","保护；保存","Salt preserves meat for winter."],
+["prevail","v.","盛行；获胜","Westerly winds prevail in spring."],
+["primitive","adj.","原始的；早期的","Primitive tools still did the job."],
+["prior","adj.","先前的；优先的","Prior surveys missed the site."],
+["probe","v./n.","探测；探查","The team probed the lake's depths."],
+["proceed","v.","继续；进行","Work proceeds despite the rain."],
+["profound","adj.","深刻的；深远的","Printing had a profound impact."],
+["prolong","v.","延长","Irrigation prolongs the growing season."],
+["prominent","adj.","显著的；杰出的","A prominent cliff marks the boundary."],
+["prompt","v.","促使 adj. 及时的","The crisis prompted new laws."],
+["propel","v.","推进；驱动","Steam once propelled these ferries."],
+["proportion","n.","比例；部分","A rising proportion live in cities."],
+["prosper","v.","繁荣；兴旺","Ports prosper where routes meet."],
+["provoke","v.","激怒；引发","The tax provoked widespread protest."],
+["quest","n.","探索；追求","The quest for gold drove exploration."],
+["radical","adj.","根本的；激进的","A radical redesign saved the project."],
+["random","adj.","随机的","The survey used random sampling."],
+["ratio","n.","比率","The ratio of prey to predator is high."],
+["readily","adv.","轻易地；欣然地","The metal is readily recycled."],
+["refute","v.","驳斥；反驳","New data refute the old claim."],
+["regulate","v.","调节；管理","Thermostats regulate the temperature."],
+["reinforce","v.","加强；加固","Steel rods reinforce the concrete."],
+["relevant","adj.","相关的","Keep only the relevant details."],
+["rely","v.","依赖；依靠","Farmers rely on monsoon rains."],
+["render","v.","使成为；给予","The drought rendered the wells useless."],
+["replicate","v.","复制；重复","Other labs replicated the result."],
+["resemble","v.","像；类似于","The pups resemble small adults."],
+["reside","v.","居住；存在于","Most species reside in the canopy."],
+["resistant","adj.","抵抗的","These crops are resistant to disease."],
+["resolve","v.","解决；决心","Talks resolved the water dispute."],
+["restore","v.","恢复；修复","Volunteers restored the old canal."],
+["retain","v.","保留；保持","The soil retains moisture well."],
+["retrieve","v.","取回；检索","Dogs retrieve downed birds."],
+["reverse","v.","颠倒；逆转","Courts reversed the earlier ruling."],
+["revise","v.","修改；修订","We revised the essay twice."],
+["rigid","adj.","僵硬的；严格的","A rigid schedule suits drilling."],
+["rigorous","adj.","严格的；严密的","The study passes rigorous checks."],
+["rotate","v.","旋转；轮作","Farmers rotate crops to save the soil."],
+["rural","adj.","农村的","Rural roads flood each spring."],
+["scarce","adj.","稀缺的","Fuel was scarce that winter."],
+["scatter","v.","散布；分散","Wind scattered the ash widely."],
+["schedule","n./v.","计划；日程","Keep a steady study schedule."],
+["scope","n.","范围","The report has a narrow scope."],
+["scrutiny","n.","仔细审查","The data invite close scrutiny."],
+["segregate","v.","分离；隔离","Sorting machines segregate the waste."],
+["sequence","n.","顺序；序列","The sequence of layers reveals the age."],
+["shallow","adj.","浅的","Shallow water warms quickly."],
+["shrink","v.","缩小；收缩","The lake began to shrink by 1980."],
+["significant","adj.","重要的；显著的","The difference is statistically significant."],
+["simultaneous","adj.","同时的","The eruptions were simultaneous."],
+["sophisticated","adj.","复杂精密的","Moa builders used sophisticated geometry."],
+["span","n./v.","跨度；跨越","The bridge spans the gorge."],
+["species","n.","物种","One species can shape a whole plain."],
+["specify","v.","具体说明","The law specifies clean-air targets."],
+["speculate","v.","推测","Scholars speculate about the purpose."],
+["sphere","n.","球体；领域","Ice once covered the polar spheres."],
+["spontaneous","adj.","自发的","Crowds gave spontaneous applause."],
+["stagnant","adj.","停滞的；不流动的","Stagnant water breeds mosquitoes."],
+["stationary","adj.","静止的","The boulder has been stationary for ages."],
+["steep","adj.","陡峭的；急剧的","The trail climbs a steep slope."],
+["stimulate","v.","刺激；激励","Questions stimulate deeper thinking."],
+["strive","v.","努力；奋斗","Settlers strove to survive the winter."],
+["submerge","v.","淹没；潜入","Rice fields are deliberately submerged."],
+["subsequent","adj.","随后的","Subsequent surveys confirmed it."],
+["substantial","adj.","大量的；可观的","The region saw substantial growth."],
+["substitute","n./v.","替代品；代替","Oats became a substitute for barley."],
+["suffice","v.","足够","Two samples will suffice."],
+["surplus","n.","剩余；盈余","A grain surplus fed the cities."],
+["suspend","v.","暂停；悬浮","Dust suspended in the air for days."],
+["sustain","v.","维持；承受","Grasslands sustain large herds."],
+["synthesize","v.","合成；综合","Plants synthesize sugars from light."],
+["tackle","v.","处理；解决","The city tackled the smog problem."],
+["tedious","adj.","乏味冗长的","Copying ledgers was tedious work."],
+["temporary","adj.","暂时的","They built temporary shelters."],
+["tentative","adj.","试探性的；暂定的","The date is still tentative."],
+["terminate","v.","终止；结束","The lease terminates in spring."],
+["terrain","n.","地形；地带","Rugged terrain slowed the army."],
+["thrive","v.","茁壮成长；兴旺","Vines thrive on the sunny slope."],
+["tolerate","v.","容忍；耐","These plants tolerate salty soil."],
+["trait","n.","特征；特质","Barking is a selected trait."],
+["transfer","v.","转移；转让","Wealth transferred to the cities."],
+["transform","v.","改变；转化","Railways transformed the plains."],
+["transition","n.","过渡；转变","The transition took two decades."],
+["transmit","v.","传送；传播","Wires transmit power over long distances."],
+["trigger","v.","引发；触发","Rainfall triggers the migration."],
+["typical","adj.","典型的","A typical course runs ten weeks."],
+["ubiquitous","adj.","无处不在的","Plastic is now ubiquitous."],
+["undergo","v.","经历；承受","The harbor underwent major changes."],
+["underlie","v.","构成…的基础","Geology underlies the whole story."],
+["undermine","v.","削弱；暗中破坏","Erosion undermines the cliff paths."],
+["undertake","v.","承担；着手","They undertook a full survey."],
+["unfold","v.","展开；显现","Events unfolded slowly that spring."],
+["uniform","adj.","统一的；一致的","Uniform brick rows mark the older quarter."],
+["unify","v.","统一","A single code unified the markets."],
+["universal","adj.","普遍的；通用的","The pattern seems universal."],
+["urban","adj.","城市的","Urban sprawl consumed the farmland."],
+["utilize","v.","利用","The plant utilizes waste heat."],
+["validate","v.","验证；确认","Further tests validated the model."],
+["vanish","v.","消失","The glaciers may vanish by 2100."],
+["variable","n./adj.","变量；多变的","Summer rainfall is highly variable."],
+["vast","adj.","巨大的","A vast herd crossed the plain."],
+["verify","v.","核实；验证","Please verify the totals twice."],
+["viable","adj.","可行的；能存活的","The eggs remain viable for weeks."],
+["vigorous","adj.","有力的；精力充沛的","Vigorous debate followed the paper."],
+["vital","adj.","至关重要的","Bees play a vital role."],
+["vivid","adj.","生动的；鲜艳的","The mural's colors remain vivid."],
+["voluntary","adj.","自愿的","The program relies on voluntary aid."],
+["widespread","adj.","广泛的","The practice became widespread."],
+["yield","n./v.","产量；产出","The field yields two crops a year."]
+];
+
+/* ============ 2. 每日文章（5 篇起步，articles.json 可扩容） ============ */
+const ARTICLES=[
+{title:"From Wolf to Watchdog: The Domestication of the Dog",cat:"Anthropology / History",
+terms:[["domestication","驯化"],["scavenger","食腐动物"],["starch","淀粉"],["selective breeding","选择育种"],["divergence","分化"]],
+paras:[
+"Long before farmers cleared the first field of wheat, and long before potters fired the first clay vessel, a quieter partnership had already begun at the edge of human campfires. Somewhere between 15,000 and 30,000 years ago, gray wolves began to shadow the bands of hunter-gatherers who moved across the late Ice Age landscape. The story of how those wary predators became the dog—the first domesticated animal and, for most of history, the only one—is one of the most intriguing puzzles in archaeology. The evidence is scattered, the timeline is contested, and each new genetic study seems to redraw the map.",
+"The most persuasive current account is known as self-domestication. Hunter-gatherer camps produced refuse heaps of bones, scraps, and broken shells. Wolves that dared to feed at the edge of those heaps gained a steady food source, but only if they could tolerate the proximity of humans. The boldest, calmest animals ate best and survived to raise offspring that inherited something of that tameness. Over many generations, this simple filter favored a population of wolves that was smaller-headed, shorter-snouted, and markedly less fearful. Biologists summarize the process bluntly: survival of the friendliest. No human plan was required at first; the advantage ran in both directions from the start.",
+"What did humans gain from the arrangement? Even a half-tame wolf is a superb alarm system, raising a chorus at the approach of strangers or predators in the dark. On the hunt, wolves could track and drive game that humans, with their weak noses and modest speed, could not easily find. The partnership also carried costs—competing for the same meat—so scholars assume the relationship tightened slowly, in places where game was plentiful enough to share. In lean valleys the experiment presumably failed, and the wolves were driven off or eaten. Domestication, in other words, was not a single event but a long series of local trials.",
+"The archaeological record supports the depth of the bond. At Bonn-Oberkassel in Germany, a 14,000-year-old burial held the remains of a young dog, carefully laid to rest alongside two humans; the animal had been ill and could not have survived without care. Similar graves appear across Europe and Siberia, some with dogs wearing collars of antler or amber. These are not the remains of livestock. They suggest an emotional attachment that predates agriculture by millennia and hint that dogs earned their place in human households as companions first and tools second.",
+"Genetics complicates the tidy picture. Comparisons of dog and wolf DNA suggest the two lineages separated somewhere between 15,000 and 40,000 years ago, an awkwardly wide window that fuels continuing debate. One firm finding, however, is that modern dogs carry extra copies of a gene for producing amylase, the enzyme that digests starch, whereas wolves have few. Dogs, in other words, evolved to live on the grain-rich diets of farming villages. Some researchers read this as evidence for a second stage of domestication, or at least of refinement, that occurred in the early farming settlements of the Neolithic, after the first, older split.",
+"Only in the past two centuries did the explosion of breeds begin, as breeders selected deliberately for size, coat, nose, and temperament, producing everything from sheep-guarding mastiffs to lap-sized companions. Yet beneath the astonishing variety, the ancient foundation remains: an animal tuned by thousands of generations of proximity to read human gestures, voices, and moods better than any other species. The dog did not merely adopt us. The two species, in a very real sense, grew up together, each reshaping the other's history at the edge of the fire."
+]},
+{title:"Coral Reefs: The Rainforests of the Sea",cat:"Marine Biology / Ecology",
+terms:[["polyp","珊瑚虫"],["zooxanthellae","虫黄藻"],["symbiosis","共生关系"],["bleaching","白化"],["calcification","钙化"]],
+paras:[
+"To a snorkeler drifting above a reef, the scene looks like a garden of stone in bloom: branching antlers, folded brains, and delicate fans, all crowded with fish of every conceivable color. Yet the reef-builder itself is neither plant nor mineral but an animal—a coral polyp, a soft-bodied creature related to jellyfish and anemones. Each polyp is roughly the size of a pencil eraser. It secretes a tiny limestone cup around itself, divides into clones, and over centuries those stacked cups become the great architecture we call a coral reef.",
+"A polyp is a capable but modest predator, snagging plankton with stinging tentacles at night. The reef's real engine lies inside its tissues: microscopic algae called zooxanthellae. In one of the most productive partnerships in nature, the algae photosynthesize and hand over most of the sugars they make—as much as ninety percent of the polyp's energy—while receiving shelter and nutrients in return. This symbiosis explains nearly everything about where reefs live: the algae need sunlight, so corals stay in shallow, clear water, and the partnership needs warmth, which confines most reefs to the tropics.",
+"The output of that partnership is out of all proportion to the space it occupies. Coral reefs cover well under one percent of the ocean floor, yet they shelter perhaps a quarter of all marine species at some point in their life cycle. They break storm waves, protecting coastlines and the cities behind them; they support fisheries that feed hundreds of millions of people; and they contribute billions of dollars a year through tourism and medicine. For many island nations, the reef is not scenery but infrastructure.",
+"That infrastructure is now under systematic strain. When seawater stays hotter than the local norm for too long, stressed polyps expel their algae, as if evicting the tenants who pay the rent. Stripped of pigment, the coral skeleton shows through white—a condition called bleaching. A bleached colony is starving, not dead; if the heat passes quickly, algae return and the coral recovers. If it does not, the colony dies and algae-eating fish give way to smothering seaweed. Global bleaching events, once rare, have struck repeatedly since 1998, and the episode of 2016 damaged much of the Great Barrier Reef.",
+"Heat is not the only threat. The ocean absorbs roughly a quarter of the carbon dioxide humanity emits, and dissolved CO2 lowers the water's pH and its store of carbonate ions—the raw material corals use to build their skeletons. This process, ocean acidification, slows calcification and weakens the structures that new polyps construct. A reef thus caught between warmer water, which starves it, and more acidic water, which disarms its masonry, recovers from damage ever more slowly, while storms and predatory starfish strike more often than before.",
+"There are grounds for stubborn hope. Marine biologists now raise coral fragments in underwater nurseries and replant them on damaged stretches; some coral strains show inherited heat tolerance; and reefs in naturally hot, fluctuating lagoons are revealing how adaptation might work. But restoration is expensive and small against the scale of the problem. The reefs that survive this century will mostly be the ones whose ultimate remedy arrives in time: a slowing of warming itself. Everything else is a bridge, and the window for building it is narrowing."
+]},
+{title:"The Little Ice Age: When the World Grew Cold",cat:"Climate History",
+terms:[["proxy","代用资料"],["aerosol","气溶胶"],["growing season","生长期"],["famine","饥荒"],["variability","（气候）波动性"]],
+paras:[
+"Between roughly 1300 and 1850, much of the Northern Hemisphere experienced a stretch of colder, stormier, less predictable weather—a period historians now call the Little Ice Age. It was no true ice age: global average temperatures dipped by perhaps one to two degrees Celsius. But the averages understate the impact. In an era when nearly everyone ate from local harvests, a shorter growing season of even a few weeks could turn a lean year into a hungry one, repeated cold years could empty a valley, and shifting sea ice could close a shipping route for good.",
+"Thermometers barely existed before the seventeenth century, so scientists reconstruct the period from proxies—natural archives that record climate. Tree rings widen in warm years and narrow in cold ones; glaciers preserve ash and air in layered ice; lake sediments hold pollen from whatever plants could survive nearby. Human records help as well: monastery diaries noting failed harvests, tax rolls listing abandoned farms, and Dutch and English paintings of frost fairs held on rivers that now rarely freeze. The proxies agree on the broad pattern, though they disagree about exactly when the coldest decades fell.",
+"What caused the chill? Three candidates lead the list. First, solar activity: sunspot observations, rare before 1610, show that the sun went strangely quiet from 1645 to 1715, the so-called Maunder Minimum, emitting slightly less energy. Second, volcanoes: major eruptions such as Samalas in 1257 and Tambora in 1815 threw sulfate aerosols into the stratosphere, veiling the sun; 1816 became the infamous 'year without a summer,' with snow in June across New England and crop failure across Europe. Third, a possible slowdown of the ocean circulation that carries warm water northward. Most likely the Little Ice Age was all three, overlapping.",
+"The consequences rippled through society. Norse settlements in Greenland, founded during a milder era, withered as pasture turned to tundra and sea ice cut off supply ships; by 1500 they were gone. In mountain villages across the Alps, advancing glaciers swallowed farmland; in China and Europe, cold, wet summers brought bread shortages and, some historians argue, helped fuel unrest. Wine grapes retreated from England; cod fishermen followed shifting waters toward new banks and, in a roundabout way, toward collisions over fishing rights that helped seed colonial rivalry.",
+"Yet the Little Ice Age also teaches caution. It was not uniformly cold everywhere at once, and its causes were natural in origin—volcanoes and a drowsy sun—which is precisely why it cannot be used to dismiss modern warming. What it does offer is a controlled experiment of sorts: a modest, naturally forced climate shift, and a clear record of how even modest shifts rearranged harvests, trade, and settlement. The lesson for the present is less about temperature itself than about sensitivity. Societies are tuned to the climate they know; the bill for a faster, larger shift is steeper still.",
+"The period closed in the mid-nineteenth century, as temperatures climbed back toward today's levels. There is an irony in the timing: the Little Ice Age ended just as industrialization began pouring carbon dioxide into the sky, and early paintings of frozen rivers now serve as a baseline against which the modern thermometer's climb is measured. A world that once shivered through volcano-darkened summers is now running a very different experiment, this one of its own making, and at a speed no frost fair ever suggested was possible."
+]},
+{title:"Why Sleep Is a Study Skill: Memory and the Sleeping Brain",cat:"Neuroscience / Psychology",
+terms:[["consolidation","（记忆）巩固"],["hippocampus","海马体"],["sleep spindle","睡眠纺锤波"],["deprivation","剥夺"],["chronotype","时型"]],
+paras:[
+"Every student knows the puzzle: two classmates attend the same lectures, spend the same hours with the same notes, and one of them calmly aces the exam while the other scrapes by. The difference is usually attributed to talent or effort, but over the past three decades memory research has pointed to a quieter factor—the hours each of them spends asleep. Sleep, it turns out, is not a pause in learning but an active stage of it, and treating it as part of study strategy rather than as lost time is among the cheapest academic advantages available.",
+"To see why, consider how a new memory is stored. Freshly learned material is first held in the hippocampus, a small structure deep in the temporal lobe that acts like a fast but crowded scratchpad. Long-term storage lies in the cortex, the brain's broad outer sheet. During deep non-REM sleep, the hippocampus repeatedly replays the day's traces in compressed bursts, while slow waves from the cortex synchronize the replay and gradually integrate it into existing knowledge. Researchers call this systems consolidation: the overnight transfer of a file from temporary storage to the permanent archive.",
+"The fingerprints of the process are visible in the EEG. Bursts of brain activity called sleep spindles intensify after a person learns something new, and students who generate more spindles after studying tend to remember more the next day. In one striking line of experiments, researchers played a faint sound or released a scent that had been paired with study material while learners slept; the sleeping brain replayed the associated memories, and recall of precisely those items improved. The brain, it seems, curates its own review session each night, and learners can, to a degree, stock the shelf before closing their eyes.",
+"Deprivation shows the same mechanism in reverse. A single all-nighter measurably weakens the hippocampus's ability to encode new material—one widely cited study found the penalty approached forty percent—so the exhausted student cramming at dawn is running the lecture through a damaged recorder. Lost REM sleep carries its own costs, dulling the emotional tagging that makes memories vivid and the pattern-completion that underlies creative insight. The familiar feeling that facts studied at 3 a.m. have turned to fog by noon is not an illusion of morale; it is the file failing to transfer at all.",
+"The practical translation is refreshingly concrete. Study the hardest material in the hour or two before sleep, when overnight consolidation can seize on it. Take a sixty-to-ninety-minute nap after a heavy study session; it contains a full cycle of deep sleep and reliably improves later recall. Space review across days rather than stacking it into one vigil, because each night of sleep between exposures strengthens the trace. Keep a steady schedule—fragmented sleep fragments replay—and move caffeine earlier, since its half-life of five or six hours means an afternoon coffee is still on duty at midnight.",
+"Two honest caveats remain. Sleep need and timing vary with chronotype, so the lark's schedule will frustrate the owl, and the science of dreaming is still young, with rival theories contesting how much consolidation happens in which stage. But the core finding has survived decades of replication: memory is written twice, once in waking attention and again in sleep. The student who protects sleep is not avoiding work. That student is simply finishing it."
+]},
+{title:"The City That Runs a Fever: Urban Heat Islands",cat:"Environmental Science",
+terms:[["albedo","反照率"],["evapotranspiration","蒸散发"],["thermal mass","热质量"],["heat wave","热浪"],["mortality","死亡率"]],
+paras:[
+"Stand on a rooftop at midnight after a hot summer day and the city below still radiates warmth, while a field outside town has already cooled. This is the urban heat island: a city that runs one to seven degrees Celsius hotter than its surroundings, with the largest gap at night, not at noon. The effect is strong enough to bend weather itself—thunderstorms drift toward hot downtown air—and it is measured daily by dense sensor networks, satellite instruments, and, increasingly, volunteers who drive streets with thermometers strapped to their cars.",
+"The causes stack neatly. Dark asphalt and black roofs have low albedo, absorbing sunlight instead of reflecting it. Where trees and grass once cooled the air through evapotranspiration—the botanical equivalent of sweating—pavement replaces them with surface that cannot sweat. Buildings of concrete and brick store the day's heat in their thermal mass and release it slowly after sunset, which is why the worst discomfort arrives at two in the morning. On top of all this, the city runs its own furnace: air conditioners pumping heat outdoors, engines idling, and industry venting around the clock.",
+"The consequences are priced in lives and megawatts. Each extra degree of evening temperature pushes electricity demand upward as air conditioning labors through the night, and that demand is often met by power plants whose emissions warm the planet in turn. The health ledger is starker: during heat waves, the deadliest weather hazard in many countries, urban nighttime heat denies tired bodies the recovery of cool sleep, and mortality climbs among the elderly, the chronically ill, and those without air conditioning. Heat also cooks urban air into smog, adding respiratory harm on top of the thermal burden.",
+"The engineering counterattack proceeds on three fronts, all tested. Cool roofs and reflective pavements raise the city's albedo, bouncing sunlight straight back to the sky. Street trees do double duty, shading surfaces that would otherwise bake while transpiring water through their leaves; a healthy canopy can cool a block by several degrees, and studies of tree-planting programs have measured reductions in heat-related illness. Green roofs combine the two, insulating the building below while cooling the air above. None of this is exotic; most of it amounts to choosing lighter materials and leaving room for vegetation.",
+"There is also an uncomfortable geography to the fever. Across many cities, mapping projects find the hottest neighborhoods are the poorest: fewer trees, more pavement, older housing, and the least air conditioning, a pattern in the United States that often traces directly to decades-old decisions about where investment was allowed. Heat, in other words, is not distributed like weather but like wealth. City governments have begun ranking neighborhoods by heat vulnerability and targeting planting and retrofit programs accordingly, treating shade as public health infrastructure rather than decoration.",
+"As the climate warms, heat waves arrive more often, last longer, and reach higher, so the heat island is no longer a local curiosity but a risk multiplier stacked on a global trend. A city that trims its own fever buys its residents real protection—cooler nights, lighter grids, fewer avoidable deaths—at a cost measured mainly in paint, trees, and foresight. The lesson written in every rooftop sensor is the same: the city is a climate its residents build, and it is one of the few climates they can rebuild on purpose."
+]}
+];
+
+/* ============ 3. 各阶段周计划（按你给的循环表编码） ============ */
+const PLANS={
+y1:{name:"大一 · 夯实基础",hrs:"约 5–6 小时/周",tag:"打地基：不刷套题、不掐表",
+days:[
+{t:["词汇：新词 30–50 个 + 复习旧词，跟读音频","精听 Conversation A：盲听→逐句听写→对照原文→跟读","用同一材料做 5 分钟跟读"],dur:"40–50分钟"},
+{t:["词汇：新词 + 复习","长难句 2 句：画主干、标修饰、口头翻译","口语跟读 5 分钟"],dur:"35–45分钟"},
+{t:["词汇：新词 + 复习","精听 Conversation B：四步精听","跟读 5 分钟"],dur:"40–50分钟"},
+{t:["词汇：新词 + 复习","长难句 2–3 句精析","口语复述 1 段精听材料 5 分钟"],dur:"35–45分钟"},
+{t:["词汇：新词 + 复习","精听 Conversation C：四步精听","跟读 5 分钟"],dur:"40–50分钟"},
+{t:["精听 Conversation D：四步精听（双周：不新增 D，把本周最差的一篇重新精听一遍）","回看本周“顽固词” 30 分钟","任选本周一篇 Conversation 脱稿跟读并录音（本周检验）"],dur:"1.5–2小时"},
+{t:["20 分钟复盘（四个问题）","剩余时间泛听 10–15 分钟或休息"],dur:"20–35分钟"}
+],check:"任一篇 Conversation 能脱稿跟读、基本跟上原速。不通过 → 下周减少新篇目，同一篇再精一次。",notes:["大一不做：不刷 TPO 套题、不写独立写作、不掐表阅读","周末检验不通过：下一周原地重复同类任务，不硬推进度"]},
+y2a:{name:"大二上 · 技巧植入期",hrs:"约 8–10 小时/周",tag:"开始接触 TPO 与题型逻辑",
+days:[
+{t:["词汇 15 分钟","TPO 阅读 1 篇不限时 25 分钟","错题标注：定位错 / 句子没读懂 / 选项偏差 10 分钟","口语跟读 5 分钟"],dur:"55–60分钟"},
+{t:["词汇 15 分钟","听力 Conversation 精听 30 分钟","口语独立题 1 道：关键词提纲 + 45 秒录音 10 分钟"],dur:"55–60分钟"},
+{t:["词汇 15 分钟","TPO 阅读第 2 篇不限时 25 分钟","长难句 3 句 15 分钟","口语跟读 5 分钟"],dur:"60分钟"},
+{t:["词汇 15 分钟","听力 Lecture 精听 35 分钟（可分两次）","口语独立题 1 道录音 10 分钟"],dur:"60分钟"},
+{t:["词汇 15 分钟","听力 1.2 倍速泛听 1 篇 10 分钟","写作：单周写独立写作段落 1 个 / 双周改上周段落 + 错题回看 30 分钟"],dur:"55–60分钟"},
+{t:["阅读两篇错题精读复盘 40 分钟","听力 Lecture 补精听 30 分钟","口语本周 2 题回听并重录 20 分钟","写作段落：单周写 / 双周改 30 分钟"],dur:"2–2.5小时"},
+{t:["单周：20 分钟复盘 + 顽固词 20 分钟 + 泛听 10 分钟","双周：半模一次（阅读 + 听力严格计时约 1.5 小时）+ 复盘 30 分钟"],dur:"20分钟或2小时"}
+],check:"统计本周阅读 + 听力错题中“词汇障碍”占比：超过一半 → 下周每天词汇加 5 分钟；低于三成 → 周末多花时间分析解题逻辑。",notes:["半模每两周一次；首考前一个月再把周日半模升级为完整模考"]},
+y2b:{name:"大二下 · 首考准备",hrs:"约 10–12 小时/周",tag:"限时训练 + 模考节奏（双周=模考周）",
+days:[
+{t:["词汇 10 分钟","TPO 阅读 1 篇限时 17 分钟 + 错题复盘 20 分钟","口语综合题 1 道 20 分钟"],dur:"1–1.5小时"},
+{t:["听力完整 Section：1 Conversation + 2 Lecture 精听 40 分钟 + 笔记复盘","口语综合题 1 道 20 分钟"],dur:"1–1.5小时"},
+{t:["词汇 10 分钟","TPO 阅读 1 篇限时 + 错题 20 分钟","综合写作模板 / 1 段 30 分钟"],dur:"1–1.5小时"},
+{t:["听力完整 Section 精听 + 笔记复盘 40 分钟","口语独立题 2 道录音 20 分钟"],dur:"1–1.5小时"},
+{t:["词汇 10 分钟","TPO 阅读 1 篇限时 + 错题 20 分钟","综合写作 1 篇或独立段落 30 分钟","错题回看 10 分钟"],dur:"1.5小时"},
+{t:["非模考周：TPO 阅读 3 篇限时 + 听力 1 个 Section + 口语 3 题","模考周：完整模考一次，严格计时"],dur:"2.5–3.5小时"},
+{t:["模考周：模考复盘 2 小时 + 弱项加练 1 小时 + 下周计划 20 分钟","非模考周：20 分钟复盘 + 写作重写 1 篇 40 分钟 + 口语重录 2 题 20 分钟"],dur:"1–3小时"}
+],check:"本周口语录音是否比上周少卡顿；写作重写是否改掉了上周标出的结构问题。",notes:["首考前 4 周切换：周六固定完整模考；周日固定全天复盘；工作日取消新阅读量，改为错题回看 + 口语 3 题/天 + 写作重写 1 篇/两天","考前 7 天停止新题，只翻错题本和口语录音"]},
+y3w:{name:"大三 · 弱项攻坚",hrs:"约 14–16 小时/周",tag:"假设口语、写作弱（可自行替换弱项）",
+days:[
+{t:["词汇 10 分钟","口语 3 题（独立 + 综合交替）45 分钟","阅读限时 20 分钟 + 错题 15 分钟","听力泛听 10 分钟"],dur:"2小时"},
+{t:["口语 3 题 45 分钟","综合写作 1 篇 30 分钟","听力 1 个 Section 精听 30 分钟","错题回看 10 分钟"],dur:"2–2.5小时"},
+{t:["口语 3 题 45 分钟","学术讨论写作 1 篇 30 分钟","阅读限时 20 分钟","听力 20 分钟"],dur:"2–2.5小时"},
+{t:["口语 3 题 45 分钟","写作自查 / 重写 1 篇 40 分钟","听力 1 个 Section 精听 30 分钟","错题回看 10 分钟"],dur:"2–2.5小时"},
+{t:["口语 3 题 45 分钟","写作段落或综合模板 30 分钟","阅读限时 20 分钟","错题本翻看 10 分钟"],dur:"2小时"},
+{t:["完整模考 1 套，严格按真实时间","模考后只标记错题，不深度复盘"],dur:"3–3.5小时"},
+{t:["模考复盘 2 小时","重录本周最卡 2 道口语题 20 分钟","重写 1 篇写作 40 分钟","下周计划 20 分钟"],dur:"3–3.5小时"}
+],check:"口语录音流利度是否提升；重写作文是否比原稿少犯同类错误。",notes:["如果弱项不是口语写作：把“口语 3 题 / 写作 1 篇”替换成你的弱项专项，另一项只保留隔天保温"]},
+y3m:{name:"大三 · 考前 4 周",hrs:"每周 2 套完整模考版",tag:"模考 + 复盘为主的冲刺节奏",
+days:[
+{t:["复盘上周六模考错题：阅读 20 分钟 + 听力 20 分钟","口语 3 题 40 分钟","写作重写 1 段 20 分钟","词汇 10 分钟"],dur:"2小时"},
+{t:["口语 3 题 40 分钟","综合写作 1 篇 30 分钟","听力错题回看 20 分钟","阅读错题回看 20 分钟"],dur:"2小时"},
+{t:["完整模考第 1 套（严格计时）"],dur:"3–3.5小时"},
+{t:["复盘周三模考 2 小时","口语 2 题 20 分钟","写作自查 20 分钟"],dur:"2.5–3小时"},
+{t:["错题本全科回看 40 分钟","口语录音回听 + 重录 2 题 30 分钟","写作模板 / 段落 20 分钟"],dur:"1.5小时"},
+{t:["完整模考第 2 套（严格计时）"],dur:"3–3.5小时"},
+{t:["复盘周六模考 2 小时","重录最卡 2 题 20 分钟","重写 1 篇 40 分钟","下周计划 20 分钟"],dur:"3–3.5小时"}
+],check:"重录口语是否更流利；重写作文是否改掉同类错误。",notes:["时间不够时：周三改为“半模：阅读 + 听力”，周六保留完整模考","考前 7 天停止一切新题，只翻错题本、听口语录音、看写作重写稿"]}
+};
+const STAGES=[["y1","大一 · 夯实基础","听说 + 词汇打底，5–6h/周"],["y2a","大二上 · 技巧植入","TPO 题型逻辑，8–10h/周"],["y2b","大二下 · 首考准备","限时 + 模考，10–12h/周"],["y3w","大三 · 弱项攻坚","口语写作专项，14–16h/周"],["y3m","大三 · 考前4周","每周 2 套模考冲刺"]];
+const DOW=["周一","周二","周三","周四","周五","周六","周日"];
+const TABS=[["today","🏠 今日"],["vocab","📚 词汇"],["sent","✍️ 句子"],["art","📄 文章"],["week","🗓 周计划"],["rev","🧭 复盘"],["set","⚙️ 设置"]];
+
+/* ============ 4. 状态 ============ */
+const LS="toeflV1";let BANK=WORDS.slice();
+function def(){return{stage:null,firstDay:dk(new Date()),cursor:0,curDate:null,curWords:[],prevWords:[],dailyN:20,checkins:{},pool:[],artQueue:[],artRound:0,artToday:null,weekReviews:{},reminders:["09:00","20:00"],notified:{},xp:0,learned:{}}}
+let S=(()=>{try{return Object.assign(def(),JSON.parse(localStorage.getItem(LS))||{})}catch(e){return def()}})();
+function save(){localStorage.setItem(LS,JSON.stringify(S))}
+function dk(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function shuf(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function isoWeek(d){const t=new Date(d);t.setDate(t.getDate()+4-(t.getDay()||7));const y=new Date(t.getFullYear(),0,1);return t.getFullYear()+"-W"+Math.ceil(((t-y)/864e5+1)/7)}
+function weekMonday(d){const m=new Date(d);m.setDate(m.getDate()-((m.getDay()+6)%7));return m}
+function parityOfMon(m){return Math.floor(Math.floor(new Date(m.getFullYear(),m.getMonth(),m.getDate()).getTime()/864e5+3)/7)%2}
+const $=s=>document.querySelector(s);
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("show"),2600)}
+function addXP(n){S.xp+=n;save();$("#xpN").textContent=S.xp}
+function speak(txt){try{const u=new SpeechSynthesisUtterance(txt);u.lang="en-US";u.rate=.9;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+function beep(){try{const c=new (window.AudioContext||window.webkitAudioContext)();const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=784;g.gain.setValueAtTime(.12,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.8);o.start();o.stop(c.currentTime+.8)}catch(e){}}
+
+/* 每日滚动：发新词 + 选文章 */
+function ensureDay(){
+  const td=dk(new Date());
+  if(S.curDate===td)return;
+  const finished=!S.curWords.length||S.curWords.every(i=>S.learned[i]);
+  if(finished){S.prevWords=S.curWords.slice();S.curWords=nextWords()}
+  S.curDate=td;S.notified={};
+  if(!S.artToday||S.artToday.date!==td){
+    if(!S.artQueue.length){S.artQueue=shuf(ARTICLES.map((_,i)=>i));S.artRound++}
+    S.artToday={date:td,idx:S.artQueue.pop()}
+  }
+  save();
+}
+function nextWords(){const arr=[];for(let i=0;i<S.dailyN&&S.cursor<BANK.length;i++)arr.push(S.cursor++);return arr}
+
+/* ============ 5. 视图 ============ */
+let view="today";
+const app=$("#app");
+function go(v){view=v;render()}
+function render(){
+  document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.v===view));
+  updateHUD();
+  if(!S.stage){app.innerHTML=`<div class="card"><h2>👋 欢迎来到 TOEFL 每日打卡</h2><p class="mut">先选择你当前所在的阶段，系统会按对应的一周循环表给你排每天的打卡任务。</p><div class="stg">${STAGES.map(s=>`<div data-st="${s[0]}"><b>${s[1]}</b><div class="mut">${s[2]}</div></div>`).join("")}</div></div>`;
+    app.querySelectorAll("[data-st]").forEach(el=>el.onclick=()=>{S.stage=el.dataset.st;save();toast("已选择阶段："+PLANS[S.stage].name);render()});
+    return;
+  }
+  ensureDay();
+  ({today:renderToday,vocab:renderVocab,sent:renderSent,art:renderArt,week:renderWeek,rev:renderRev,set:renderSet})[view]();
+}
+function updateHUD(){
+  const td=dk(new Date());const done=S.checkins[td]&&S.checkins[td].done;
+  let n=0,d=new Date();
+  if(!(S.checkins[dk(d)]&&S.checkins[dk(d)].done))d.setDate(d.getDate()-1);
+  while(S.checkins[dk(d)]&&S.checkins[dk(d)].done){n++;d.setDate(d.getDate()-1)}
+  $("#streakN").textContent=n;$("#xpN").textContent=S.xp;
+  const b=$("#banner");
+  if(!S.stage){b.className=""}
+  else if(done){b.className="done";b.textContent=`✅ 今日已打卡 · 已连续 ${n} 天，保持住！`}
+  else{b.className="warn";b.textContent=`🔥 今天还没打卡（当前连续 ${n} 天）——别断在今天！`}
+}
+function coreTasks(){
+  const td=dk(new Date());const c=S.checkins[td]||{tasks:{}};
+  const seen=S.curWords.filter(i=>S.learned[i]).length;
+  const a=ARTICLES[S.artToday?S.artToday.idx:0];
+  return[
+   {id:"c0",name:`背新词 ${S.dailyN} 个（今日进度 ${seen}/${S.curWords.length||S.dailyN}）`,done:!!c.tasks.c0,go:"vocab"},
+   {id:"c1",name:"复盘昨天的单词（小测验）",done:!!c.tasks.c1,go:"vocab"},
+   {id:"c2",name:"阅读今日文章：" + (a?a.title:""),done:!!c.tasks.c2,go:"art"},
+   {id:"c3",name:"学习今日句子（跟读 5 句）",done:!!c.tasks.c3,go:"sent"}
+  ];
+}
+function renderToday(){
+  const p=PLANS[S.stage],td=dk(new Date());
+  const dow=(new Date().getDay()+6)%7,d=p.days[dow];
+  const par=parityOfMon(weekMonday(new Date()));
+  const cores=coreTasks(),c=S.checkins[td]||(S.checkins[td]={tasks:{}});
+  const total=cores.length+d.t.length,doneN=cores.filter(x=>x.done).length+d.t.filter((_,i)=>c.tasks["p"+i]).length;
+  const pct=Math.round(doneN/total*100);
+  const ring=doneN>=total?"conic-gradient(#7fb98a 100%,#2a2f3f 0)":`conic-gradient(#d76a7c ${pct}%,#2a2f3f 0)`;
+  app.innerHTML=`
+  <div class="card hero">
+    <div class="ring" style="background:${ring}">
+      <button id="ck">${c.done?"已打卡 ✓":"打卡"}</button>
+    </div>
+    <div class="info">
+      <h2>${new Date().toLocaleDateString("zh-CN",{month:"long",day:"numeric",weekday:"long"})} · ${p.name}</h2>
+      <div class="mut">本周是${par?"双周":"单周"} · 今日任务 ${doneN}/${total} · 预计 ${d.dur}</div>
+      <div class="bar"><i style="width:${pct}%"></i></div>
+    </div>
+  </div>
+  <div class="card"><h3>每日核心四件套（所有阶段通用）</h3>
+    ${cores.map(x=>`<label class="task ${x.done?"done":""}"><input type="checkbox" ${x.done?"checked":""} data-core="${x.id}"><span>${x.name}</span><button class="dur" data-gov="${x.go}">前往 →</button></label>`).join("")}
+  </div>
+  <div class="card"><h3>${DOW[dow]} · 阶段任务</h3>
+    ${d.t.map((t,i)=>`<label class="task ${c.tasks["p"+i]?"done":""}"><input type="checkbox" ${c.tasks["p"+i]?"checked":""} data-p="${i}"><span>${t}</span></label>`).join("")}
+    <div class="mut" style="margin-top:6px">⏱ 今日时长：${d.dur}</div>
+  </div>`;
+  $("#ck").onclick=()=>{
+    if(c.done)return;
+    c.done=1;save();addXP(25);beep();toast("🎉 打卡成功！+25 XP，连续 "+($("#streakN").textContent*1+1)+" 天");
+    render();
+  };
+  app.querySelectorAll("[data-core]").forEach(el=>el.onchange=()=>toggleTask("c"+el.dataset.core.slice(1)?el.dataset.core:""));
+  app.querySelectorAll("[data-p]").forEach(el=>el.onchange=()=>toggleTask("p"+el.dataset.p));
+  app.querySelectorAll("[data-gov]").forEach(el=>el.onclick=e=>{e.preventDefault();go(el.dataset.gov)});
+}
+function toggleTask(id){
+  const td=dk(new Date()),c=S.checkins[td]||(S.checkins[td]={tasks:{}});
+  if(c.tasks[id]){delete c.tasks[id];S.xp=Math.max(0,S.xp-10)}
+  else{c.tasks[id]=1;addXP(10)}
+  save();render();
+}
+
+/* ---- 词汇 ---- */
+function renderVocab(mode){
+  mode=mode||(S._vtab||"new");
+  S._vtab=mode;
+  const unseen=S.curWords.filter(i=>!S.learned[i]);
+  let html=`<div class="card"><div style="display:flex;gap:8px">
+    <button class="btn ${mode==="new"?"":"ghost"}" data-vt="new">新词</button>
+    <button class="btn blue ${mode==="rev"?"":"ghost"}" data-vt="rev">复习昨日</button>
+    <button class="btn ghost ${mode==="pool"?"":"ghost"}" data-vt="pool" style="${mode==="pool"?"background:linear-gradient(135deg,var(--mist),#242c42);color:#fff":""}">生词本 ${S.pool.length}</button></div></div>`;
+  if(mode==="new"){
+    if(!S.curWords.length){
+      html+=`<div class="card"><h3>词库已用完 🈵</h3><p class="mut">内置词库 ${BANK.length} 词已全部学完。可在网站目录放入 words.json 扩容（格式见“设置”页说明），或开始第二轮复习。</p><button class="btn" onclick="S.cursor=0;S.learned={};save();render()">🔁 开始第二轮</button></div>`;
+    }else if(!unseen.length){
+      html+=`<div class="card"><h3>✅ 今日 ${S.curWords.length} 个新词已完成 +30 XP</h3><p class="mut">明天这里会出现新的 ${S.dailyN} 个词。记得去“复习昨日”做小测验。</p></div>`;
+    }else{
+      const i=unseen[0],w=BANK[i];
+      html+=`<div class="paper wcard">
+        <div class="w">${w[0]}</div><div class="pos">${w[1]}</div>
+        <div class="def">${w[2]}</div>
+        <div class="ex">${w[3].replace(new RegExp(w[0].split(/[\s-]/)[0].replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"i"),m=>`<b>${m}</b>`)}</div>
+        <button class="mini" onclick="speak('${w[0].replace(/'/g,"\\'")}')">🔊 朗读单词</button>
+        <button class="mini" onclick="speak('${w[3].replace(/'/g,"\\'")}')">🔊 朗读例句</button>
+      </div>
+      <div class="card"><div class="mut">剩余 ${unseen.length} / ${S.curWords.length}</div><div class="bar"><i style="width:${(S.curWords.length-unseen.length)/S.curWords.length*100}%"></i></div>
+      <div class="opt">
+        <button data-mark="ok" style="background:#2e5b45">认识 ✅</button>
+        <button data-mark="fuzzy">模糊 🤔</button>
+        <button data-mark="no" style="background:var(--wine)">不认识 ❌</button>
+      </div></div>`;
+    }
+  }
+  if(mode==="rev"){
+    const items=(S.prevWords||[]).slice(0,20);
+    if(!items.length)html+=`<div class="card"><p class="mut">昨天还没有已学完的单词，明天再来做复盘小测验。</p></div>`;
+    else if(S._revQ===undefined||S._revDate!==dk(new Date())){S._revQ=shuf(items);S._revPos=0;S._revR=0;S._revDate=dk(new Date())}
+    if(S._revQ&&S._revPos<S._revQ.length){
+      const idx=S._revQ[S._revPos],w=BANK[idx];
+      if(!S._revOpts||S._revFor!==idx){
+        let opts=shuf(BANK.filter(x=>x!==w).slice(0,60)).slice(0,3).map(x=>x[0]);opts.push(w[0]);opts=shuf(opts);S._revOpts=opts;S._revFor=idx;
+      }
+      html+=`<div class="card"><h3>释义 → 选出单词（${S._revPos+1}/${S._revQ.length}）</h3>
+      <div class="paper" style="text-align:center;font-size:20px;padding:22px">${w[2]}</div>
+      <div class="opt" style="grid-template-columns:1fr 1fr">${S._revOpts.map(o=>`<button data-ans="${o}">${o}</button>`).join("")}</div>
+      ${S._revMsg?`<div class="mut" style="margin-top:10px">${S._revMsg}</div>`:""}</div>`;
+    }else if(S._revQ){
+      const c=S.checkins[dk(new Date())]||(S.checkins[dk(new Date())]={tasks:{}});
+      if(!c.tasks.c1){c.tasks.c1=1;addXP(20)}
+      save();
+      html+=`<div class="card"><h3>✅ 复盘完成：答对 ${S._revR}/${S._revQ.length} +20 XP</h3><p class="mut">答错的词已自动进入“生词本”，后天再战。</p></div>`;
+    }
+  }
+  if(mode==="pool"){
+    html+=`<div class="card"><h3>生词本（${S.pool.length}）</h3>${S.pool.length?S.pool.map(i=>`<div class="task"><span><b>${BANK[i][0]}</b> ${BANK[i][1]} ${BANK[i][2]}</span><button class="dur" onclick="speak('${BANK[i][0].replace(/'/g,"\\'")}')">🔊</button><button class="dur" data-rm="${i}">认识，移出 ✅</button></div>`).join(""):`<p class="mut">空空如也，很好！复习测验中答错的词会自动收进来。</p>`}</div>`;
+  }
+  app.innerHTML=html;
+  app.querySelectorAll("[data-vt]").forEach(b=>b.onclick=()=>renderVocab(b.dataset.vt));
+  app.querySelectorAll("[data-mark]").forEach(b=>b.onclick=()=>{
+    const i=unseen[0];S.learned[i]=1;
+    const m=b.dataset.mark;
+    if(m!=="ok"&&!S.pool.includes(i))S.pool.push(i);
+    if(m==="ok")addXP(3);
+    const c=S.checkins[dk(new Date())]||(S.checkins[dk(new Date())]={tasks:{}});
+    if(S.curWords.every(x=>S.learned[x])&&!c.tasks.c0){c.tasks.c0=1;addXP(30)}
+    save();renderVocab("new");
+  });
+  app.querySelectorAll("[data-ans]").forEach(b=>b.onclick=()=>{
+    const idx=S._revQ[S._revPos],right=BANK[idx][0];
+    if(b.dataset.ans===right){S._revR++;S._revMsg="✅ 正确！";S.pool=S.pool.filter(x=>x!==idx);addXP(5)}
+    else{S._revMsg=`❌ 正确答案：${right}（已加入生词本）`;if(!S.pool.includes(idx))S.pool.push(idx)}
+    S._revPos++;S._revOpts=null;save();
+    if(S._revPos>=S._revQ.length)toast("复盘小测完成！");
+    renderVocab("rev");
+  });
+  app.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{S.pool=S.pool.filter(x=>x!=b.dataset.rm);save();renderVocab("pool")});
+}
+
+/* ---- 句子 ---- */
+function todaySentences(){
+  const out=[];
+  S.curWords.filter(i=>BANK[i]&&BANK[i][3]).slice(0,4).forEach(i=>out.push({s:BANK[i][3],w:BANK[i][0],d:BANK[i][2],src:"今日词汇"}));
+  const a=ARTICLES[S.artToday?S.artToday.idx:0];
+  if(a){[1,3,4].forEach(p=>{if(out.length<6&&a.paras[p]){
+    const first=(a.paras[p].match(/[^.!?]+[.!?]/)||[""])[0].trim();
+    if(first.length>30){const term=(a.terms||[]).map(t=>t[0]).find(t=>first.toLowerCase().includes(t.toLowerCase()));
+      out.push({s:first,w:term,d:term?(a.terms.find(t=>t[0]===term)||[,""])[1]:"",src:"今日文章"})}}})}
+  return out;
+}
+function renderSent(){
+  const list=todaySentences(),c=S.checkins[dk(new Date())]||(S.checkins[dk(new Date())]={tasks:{}});
+  app.innerHTML=`<div class="card"><h2>✍️ 今日句子（${list.length} 句）</h2>
+  <p class="mut">先听朗读 → 自己跟读三遍 → 点开看关键词释义。加粗的是托福关键实义词。</p>
+  ${list.map((x,i)=>{
+    const re=new RegExp((x.w||"zzz").replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"i");
+    return `<div class="snt"><div class="en">${x.s.replace(re,m=>`<b>${m}</b>`)}</div>
+    <div style="margin-top:6px"><button class="mini" onclick="speak('${x.s.replace(/'/g,"\\'")}')">🔊 朗读</button>
+    ${x.w?`<button class="mini" onclick="this.nextElementSibling.style.display='inline'">看释义</button><span style="display:none;color:var(--mistL)">${x.w} ${x.d}</span>`:""}
+    <span class="mut" style="float:right">${x.src}</span></div></div>`}).join("")}
+  <button class="btn" id="sd">${c.tasks.c3?"已完成 ✓":"标记完成（+15 XP）"}</button></div>`;
+  $("#sd").onclick=()=>{if(!c.tasks.c3){c.tasks.c3=1;addXP(15);save()}render()};
+}
+
+/* ---- 文章 ---- */
+function renderArt(){
+  const a=ARTICLES[S.artToday.idx],wc=a.paras.join(" ").split(/\s+/).length;
+  const c=S.checkins[dk(new Date())]||(S.checkins[dk(new Date())]={tasks:{}});
+  let body=a.paras.map(p=>{
+    let h=p;(a.terms||[]).forEach(t=>{h=h.replace(new RegExp(t[0].replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"gi"),m=>`<b>${m}</b>`)});
+    return `<p>${h}</p>`}).join("");
+  app.innerHTML=`<div class="card" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:center">
+    <div><b>${a.cat}</b> · 约 ${wc} 词 · 第 ${S.artRound} 轮 · 剩余未读 ${S.artQueue.length+1} 篇</div>
+    <button class="btn" id="rd">${c.tasks.c2?"已读 ✓":"标记已读（+20 XP）"}</button></div>
+  <div class="paper"><h2 style="font-size:22px;margin:0 0 4px">${a.title}</h2>
+  <div style="margin-bottom:12px">${(a.terms||[]).map(t=>`<span class="term">${t[0]} ${t[1]}</span>`).join("")}</div>
+  ${body}</div>`;
+  $("#rd").onclick=()=>{if(!c.tasks.c2){c.tasks.c2=1;addXP(20);save()}render()};
+}
+
+/* ---- 周计划 ---- */
+function renderWeek(){
+  const p=PLANS[S.stage],mon=weekMonday(new Date()),par=parityOfMon(mon);
+  let rows="";
+  for(let i=0;i<7;i++){
+    const d=new Date(mon);d.setDate(d.getDate()+i);const key=dk(d);
+    const dd=p.days[i],c=S.checkins[key],isToday=key===dk(new Date());
+    const total=dd.t.length,doneN=c?dd.t.filter((_,j)=>c.tasks["p"+j]).length:0;
+    rows+=`<tr class="${isToday?"today":""}"><td class="dow">${DOW[i]}<br><span class="mut">${key.slice(5)}</span></td>
+    <td>${isToday?"（勾选请到“今日”页）":dd.t.map((t,j)=>`<div style="margin:2px 0;color:${c&&c.tasks["p"+j]?"var(--ok)":"inherit"}">${c&&c.tasks["p"+j]?"✓":"·"} ${t}</div>`).join("")}
+    <div class="mut">${(c&&c.done)?"✅ 已打卡":""} ${doneN}/${total}</div></td>
+    <td class="mut" style="white-space:nowrap">${dd.dur}</td></tr>`;
+  }
+  app.innerHTML=`<div class="card"><h2>${p.name} · 一周循环表</h2>
+  <p class="mut">本周是${par?"双周":"单周"}${S.stage==="y2b"?"（双周=模考周）":""} · ${p.hrs} · ${p.tag}</p>
+  <div style="overflow-x:auto"><table class="wk">${rows}</table></div>
+  <h3>📌 周末检验标准</h3><p class="mut">${p.check}</p>
+  ${p.notes.map(n=>`<p class="mut">· ${n}</p>`).join("")}
+  <p class="mut">原则：周末检验不通过，下一周原地重复同类任务，不硬推进度；周日固定 20 分钟复盘（见“复盘”页四个问题）。</p></div>`;
+}
+
+/* ---- 复盘 ---- */
+function renderRev(){
+  const wk=isoWeek(new Date()),old=S.weekReviews[wk]||{};
+  const hist=Object.keys(S.weekReviews).sort().reverse().slice(0,8);
+  app.innerHTML=`<div class="card"><h2>🧭 每周日 20 分钟固定复盘（${wk}）</h2>
+  <p class="mut">所有阶段通用：写在同一个地方，四问四答。</p>
+  <h3>1. 完成率：本周计划完成多少？（低于 70% → 下周砍掉非核心任务，保词汇 + 精听/错题）</h3>
+  <input type="text" id="q1" value="${old.q1||""}" placeholder="例如：85%">
+  <h3>2. 高频错因：本周最多的错因标签是什么？（下周往那个方向多倾斜 10–15 分钟）</h3>
+  <input type="text" id="q2" value="${old.q2||""}" placeholder="例如：定位错 60%，词汇障碍 30%">
+  <h3>3. 只写 1 条改进点</h3>
+  <input type="text" id="q3" value="${old.q3||""}" placeholder="例如：听力笔记只记名词和逻辑词">
+  <h3>4. 周末检验过没过？（没过 → 下周原地重复同类任务）</h3>
+  <select id="q4"><option value="">请选择…</option><option ${old.q4==="通过"?"selected":""}>通过</option><option ${old.q4==="未通过"?"selected":""}>未通过</option></select>
+  <p><button class="btn" id="sv">保存本周复盘</button></p></div>
+  ${hist.length?`<div class="card"><h3>历史复盘</h3>${hist.map(k=>{const r=S.weekReviews[k];return `<div class="task" style="flex-direction:column;align-items:stretch"><b>${k}</b><span class="mut">完成率 ${r.q1||"—"} · 错因 ${r.q2||"—"} · 检验 ${r.q4||"—"}</span><span>${r.q3||""}</span></div>`}).join("")}</div>`:""}`;
+  $("#sv").onclick=()=>{S.weekReviews[wk]={q1:$("#q1").value,q2:$("#q2").value,q3:$("#q3").value,q4:$("#q4").value};save();toast("复盘已保存 ✍️");renderRev()};
+}
+
+/* ---- 设置 ---- */
+function renderSet(){
+  app.innerHTML=`<div class="card"><h2>⚙️ 设置</h2>
+  <h3>当前阶段</h3><div class="stg">${STAGES.map(s=>`<div data-st="${s[0]}" style="${S.stage===s[0]?"border-color:var(--wineL)":""}"><b>${s[1]}</b><div class="mut">${s[2]}</div></div>`).join("")}</div>
+  <h3>每日新词数量</h3><select id="dn">${[20,30,40,50].map(n=>`<option ${S.dailyN===n?"selected":""}>${n}</option>`).join("")}</select>
+  <h3>每日打卡提醒时间（${S.reminders.join("、")}）</h3>
+  <div style="display:flex;gap:8px"><input type="time" id="rt"><button class="btn blue" id="ra">添加</button></div>
+  <div>${S.reminders.map((t,i)=>`<span class="chip">${t} <b data-rm="${i}" style="cursor:pointer">✕</b></span>`).join(" ")}</div>
+  <h3>桌面通知</h3><p class="mut">点击“开启提醒”，并在弹窗中允许通知。应用保持打开（可最小化/后台）时，到点会弹出系统通知。</p>
+  <button class="btn" id="nb">${("Notification"in window)?("权限："+Notification.permission):"此浏览器不支持通知"}</button>
+  <button class="btn blue" id="nt">发送测试通知</button>
+  <h3>数据备份</h3><p class="mut">打卡记录存在本机浏览器里。换设备前请导出，再在新设备导入。</p>
+  <button class="btn blue" id="ex">导出数据</button>
+  <label class="btn ghost" style="display:inline-block">导入数据<input type="file" id="im" accept=".json" style="display:none"></label>
+  <button class="btn ghost" id="rs" style="color:var(--wineL)">清空全部数据</button>
+  <h3>词库 / 文章进度</h3>
+  <p class="mut">词库：已学 ${Object.keys(S.learned).length} / ${BANK.length}（每天 ${S.dailyN} 个不重复）<br>文章：已读 ${S.artRound?Math.max(0,S.artRound*ARTICLES.length-S.artQueue.length-1):0} 篇，内置 ${ARTICLES.length} 篇</p>
+  <h3>扩容到 10000 词 / 更多文章</h3>
+  <p class="mut">在网页同目录放一个 <b>words.json</b>（数组，每项 2–4 列）：[["absolute","adj.","绝对的","We have absolute confidence."]] —— 页面打开时会自动合并、去重。<br>文章同理：<b>articles.json</b>：[{"title":"标题","cat":"分类","terms":[["term","释义"]],"paras":["第一段","第二段"]}]</p>
+  </div>`;
+  app.querySelectorAll("[data-st]").forEach(el=>el.onclick=()=>{S.stage=el.dataset.st;save();toast("已切换到 "+PLANS[S.stage].name);go("today")});
+  $("#dn").onchange=e=>{S.dailyN=+e.target.value;save();toast("每日新词数已改为 "+S.dailyN)};
+  $("#ra").onclick=()=>{const v=$("#rt").value;if(v&&S.reminders.length<4){S.reminders.push(v);save();renderSet()}};
+  app.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{S.reminders.splice(+b.dataset.rm,1);save();renderSet()});
+  $("#nb").onclick=async()=>{if(!("Notification"in window))return toast("此浏览器不支持通知");const p=await Notification.requestPermission();toast("通知权限："+p);renderSet()};
+  $("#nt").onclick=()=>fireNotif("🍷 测试通知","如果你能看到这条，说明桌面提醒已生效！");
+  $("#ex").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:"application/json"}));a.download="toefl-backup.json";a.click()};
+  $("#im").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{S=Object.assign(def(),JSON.parse(r.result));save();location.reload()}catch(x){toast("文件格式不对")}};r.readAsText(f)};
+  $("#rs").onclick=()=>{if(confirm("确定清空所有打卡记录、进度和设置？")){S=def();save();location.reload()}};
+}
+
+/* ============ 6. 提醒调度 ============ */
+function fireNotif(title,body){
+  beep();
+  try{
+    if("serviceWorker"in navigator&&navigator.serviceWorker.controller){
+      navigator.serviceWorker.ready.then(r=>r.showNotification(title,{body,icon:"icon.svg",tag:"toefl"}));return
+    }
+  }catch(e){}
+  if("Notification"in window&&Notification.permission==="granted"){try{new Notification(title,{body,icon:"icon.svg"})}catch(e){}}
+}
+setInterval(()=>{
+  if(!S.stage)return;
+  const n=new Date(),td=dk(n);
+  const hm=String(n.getHours()).padStart(2,"0")+":"+String(n.getMinutes()).padStart(2,"0");
+  const done=S.checkins[td]&&S.checkins[td].done;
+  let ch=false;
+  S.reminders.forEach(t=>{
+    const key=td+"|"+t;
+    if(!S.notified[key]&&hm>=t){S.notified[key]=1;ch=true;
+      if(!done)fireNotif("🍷 TOEFL 打卡提醒","今天还没打卡：新词 "+S.dailyN+" 个 + 复盘昨日 + 一篇文章 · 已连续 "+$("#streakN").textContent+" 天，别断在今天 🔥")}
+  });
+  if(ch)save();
+},20000);
+
+/* ============ 7. PWA / 启动 ============ */
+let deferred=null;
+addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferred=e;$("#installBtn").style.display="";$("#installBtn").textContent="安装到本机"});
+$("#installBtn").onclick=()=>{if(deferred){deferred.prompt();deferred=null}else toast("请通过浏览器菜单“安装应用/添加到主屏幕”安装")};
+if("serviceWorker"in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("sw.js").catch(()=>{});
+fetch("words.json").then(r=>r.ok?r.json():null).then(d=>{if(Array.isArray(d)&&d.length){const known=new Set(WORDS.map(w=>w[0]));d.forEach(w=>{if(Array.isArray(w)&&w[0]&&!known.has(w[0])){BANK.push(w.length>2?w:[w[0],w[1]||"",w[2]||"",""])}})}}).catch(()=>{});
+fetch("articles.json").then(r=>r.ok?r.json():null).then(d=>{if(Array.isArray(d)&&d.length)ARTICLES.push(...d)}).catch(()=>{});
+$("#tabs").innerHTML=TABS.map(t=>`<button data-v="${t[0]}">${t[1]}</button>`).join("");
+document.querySelectorAll("#tabs button").forEach(b=>b.onclick=()=>go(b.dataset.v));
+render();
+</script>
+</body>
+</html>
