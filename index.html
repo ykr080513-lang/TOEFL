@@ -1027,7 +1027,22 @@ if("serviceWorker"in navigator&&location.protocol.startsWith("http"))navigator.s
 /* 词库加载顺序：本机导入缓存 → words.json → （可选 articles.json） */
 try{const ext=JSON.parse(localStorage.getItem("toeflExt")||"[]");if(Array.isArray(ext)&&ext.length){mergeBank(ext);}}catch(e){}
 fetch("words.json").then(r=>r.ok?r.json():null).then(d=>{if(Array.isArray(d)&&d.length){mergeBank(d);render()}}).catch(()=>{});
-fetch("articles.json").then(r=>r.ok?r.json():null).then(d=>{if(Array.isArray(d)&&d.length)ARTICLES.push(...d)}).catch(()=>{});
+fetch("articles.json?t=" + Date.now()).then(r => r.ok ? r.json() : null).then(d => {
+  if (Array.isArray(d) && d.length) {
+    const oldLen = ARTICLES.length;
+    ARTICLES.push(...d);
+    // 把新抓取到的文章序号立刻追加进当轮待读队列中
+    if (S.artQueue) {
+      for (let i = oldLen; i < ARTICLES.length; i++) {
+        if (!S.artQueue.includes(i) && (!S.artToday || S.artToday.idx !== i)) {
+          S.artQueue.push(i);
+        }
+      }
+      save();
+    }
+    if (view === "art" || view === "today") render();
+  }
+}).catch(() => {});
 $("#tabs").innerHTML=TABS.map(t=>`<button data-v="${t[0]}">${t[1]}</button>`).join("");
 document.querySelectorAll("#tabs button").forEach(b=>b.onclick=()=>go(b.dataset.v));
 render();
