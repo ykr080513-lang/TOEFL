@@ -479,7 +479,7 @@ const WORDS=[
 ["yield","n./v.","产量；产出","The field yields two crops a year."]
 ];
 
-/* ============ 2. 每日文章 ============ */
+/* ============ 2. 内置文章（articles.json 会自动追加更多） ============ */
 const ARTICLES=[
 {title:"From Wolf to Watchdog: The Domestication of the Dog",cat:"Anthropology / History",
 terms:[["domestication","驯化"],["scavenger","食腐动物"],["starch","淀粉"],["selective breeding","选择育种"],["divergence","分化"]],
@@ -618,7 +618,7 @@ function mergeBank(arr){
   return add;
 }
 
-/* 每日滚动（修复版：支持动态新增的文章） */
+/* 每日滚动（支持动态新增的文章） */
 function ensureDay(){
   const td=dk(new Date());
   if(S.curDate!==td){
@@ -689,7 +689,7 @@ function renderToday(){
     </div>
     <div class="info">
       <h2>${new Date().toLocaleDateString("zh-CN",{month:"long",day:"numeric",weekday:"long"})} · ${p.name}</h2>
-      <div class="mut">本周是${par?"双周":"单周"} · 今日任务 ${doneN}/${total} · 预计 ${d.dur} · 词库 ${BANK.length} 词</div>
+      <div class="mut">本周是${par?"双周":"单周"} · 今日任务 ${doneN}/${total} · 预计 ${d.dur}</div>
       <div class="bar"><i style="width:${pct}%"></i></div>
     </div>
   </div>
@@ -830,7 +830,7 @@ function renderArt(){
     let h=p;(a.terms||[]).forEach(t=>{h=h.replace(new RegExp(t[0].replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"gi"),m=>`<b>${m}</b>`)});
     return `<p>${h}</p>`}).join("");
   app.innerHTML=`<div class="card" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:center">
-    <div><b>${a.cat}</b> · 约 ${wc} 词 · 第 ${S.artRound} 轮 · 总共 ${ARTICLES.length} 篇 · 剩余未读 ${S.artQueue.length} 篇</div>
+    <div><b>${a.cat}</b> · 约 ${wc} 词</div>
     <button class="btn" id="rd">${c.tasks.c2?"已读 ✓":"标记已读（+20 XP）"}</button></div>
   <div class="paper"><h2 style="font-size:22px;margin:0 0 4px">${a.title}</h2>
   <div style="margin-bottom:12px">${(a.terms||[]).map(t=>`<span class="term">${t[0]} ${t[1]}</span>`).join("")}</div>
@@ -899,7 +899,7 @@ function renderSet(){
   <label class="btn ghost" style="display:inline-block">导入数据<input type="file" id="im" accept=".json" style="display:none"></label>
   <button class="btn ghost" id="rs" style="color:var(--wineL)">清空全部数据</button>
   <h3>词库 / 文章进度</h3>
-  <p class="mut" id="stat">词库：已学 ${Object.keys(S.learned).length} / ${BANK.length}（每天 ${S.dailyN} 个不重复；内置 ${WORDS.length} + 导入 ${BANK.length-WORDS.length}）<br>文章：当前共 ${ARTICLES.length} 篇</p>
+  <p class="mut" id="stat">词库：已学 ${Object.keys(S.learned).length} / ${BANK.length}（每天 ${S.dailyN} 个不重复）<br>文章：当前共 ${ARTICLES.length} 篇</p>
   </div>`;
   app.querySelectorAll("[data-st]").forEach(el=>el.onclick=()=>{S.stage=el.dataset.st;save();toast("已切换到 "+PLANS[S.stage].name);go("today")});
   $("#dn").onchange=e=>{S.dailyN=+e.target.value;save();toast("每日新词数已改为 "+S.dailyN)};
@@ -909,7 +909,7 @@ function renderSet(){
   $("#nt").onclick=()=>fireNotif("🍷 测试通知","如果你能看到这条，说明桌面提醒已生效！");
   $("#ex").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:"application/json"}));a.download="toefl-backup.json";a.click()};
   $("#im").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{S=Object.assign(def(),JSON.parse(r.result));save();location.reload()}catch(x){toast("文件格式不对")}};r.readAsText(f)};
-  $("#rs").onclick=()=>{if(confirm("确定清空所有打卡记录、进度和设置？（导入的词库也会一并清除，但 words.json 文件里的词库不受影响）")){localStorage.removeItem(LS);localStorage.removeItem("toeflExt");location.reload()}};
+  $("#rs").onclick=()=>{if(confirm("确定清空所有打卡记录、进度和设置？（words.json 文件里的词库不受影响）")){localStorage.removeItem(LS);localStorage.removeItem("toeflExt");location.reload()}};
   $("#ecsel").onclick=()=>$("#ecfile").click();
   $("#ecfile").onchange=e=>{
     const f=e.target.files[0];if(!f)return;
@@ -1031,7 +1031,7 @@ fetch("articles.json?_t="+Date.now())
       const oldLen=ARTICLES.length;
       const knownTitles=new Set(ARTICLES.map(a=>a.title));
       d.forEach(a=>{
-        if(a&&a.title&&!knownTitles.has(a.title)){
+        if(a&&a.title&&!knownTitles.has(a.title)&&(a.paras||[]).join(" ").split(/\s+/).length>=200){
           ARTICLES.push(a);knownTitles.add(a.title);
         }
       });
