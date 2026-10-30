@@ -607,6 +607,7 @@ function speak(txt){try{const u=new SpeechSynthesisUtterance(txt);u.lang="en-US"
 function beep(){try{const c=new (window.AudioContext||window.webkitAudioContext)();const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=784;g.gain.setValueAtTime(.12,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.8);o.start();o.stop(c.currentTime+.8)}catch(e){}}
 
 function mergeBank(arr){
+  const oldLen=BANK.length;
   const known=new Set(BANK.map(w=>String(w[0]).toLowerCase()));
   let add=0;
   (arr||[]).forEach(w=>{
@@ -615,18 +616,22 @@ function mergeBank(arr){
     if(!wd||known.has(wd))return;known.add(wd);
     BANK.push([wd,String(w[1]||""),String(w[2]||""),String(w[3]||""),String(w[4]||"")]);add++;
   });
+  if(add>0){
+    const newIdx=[];
+    for(let i=oldLen;i<BANK.length;i++)newIdx.push(i);
+    if(!Array.isArray(S.wQueue))S.wQueue=[];
+    S.wQueue=S.wQueue.concat(shuf(newIdx));
+    save();
+  }
   return add;
 }
 
 /* 每日滚动（支持动态新增的文章） */
+/* 每日滚动：文章支持动态新增；单词改为每日随机、整轮不重复 */
+let BANK_READY=false;
 function ensureDay(){
   const td=dk(new Date());
-  if(S.curDate!==td){
-    const finished=!S.curWords.length||S.curWords.every(i=>S.learned[i]);
-    if(finished){S.prevWords=S.curWords.slice();S.curWords=nextWords()}
-    S.curDate=td;S.notified={};
-    save();
-  }
+  if(S.curDate!==td){S.curDate=td;S.notified={};save()}
   if(!S.artToday||S.artToday.date!==td){
     if(!S.artQueue||!S.artQueue.length){
       S.artQueue=shuf(ARTICLES.map((_,i)=>i));
@@ -635,8 +640,27 @@ function ensureDay(){
     S.artToday={date:td,idx:S.artQueue.pop()};
     save();
   }
+  maybeDeal();
 }
-function nextWords(){const arr=[];for(let i=0;i<S.dailyN&&S.cursor<BANK.length;i++)arr.push(S.cursor++);return arr}
+function maybeDeal(){
+  if(!BANK_READY)return;
+  const td=dk(new Date());
+  if(S.dealt===td)return;
+  const finished=!S.curWords.length||S.curWords.every(i=>S.learned[i]);
+  if(finished){S.prevWords=S.curWords.slice();S.curWords=drawWords()}
+  S.dealt=td;save();
+}
+function drawWords(){
+  if(!Array.isArray(S.wQueue)||!S.wQueue.length){
+    const remain=[];
+    for(let i=0;i<BANK.length;i++){if(!S.learned[i])remain.push(i)}
+    if(remain.length>=S.dailyN){S.wQueue=shuf(remain)}
+    else{S.learned={};S.wQueue=shuf(BANK.map((_,i)=>i))}
+  }
+  const out=[];
+  for(let i=0;i<S.dailyN&&S.wQueue.length;i++)out.push(S.wQueue.pop());
+  return out;
+}
 
 /* ============ 5. 视图 ============ */
 let view="today";
@@ -727,7 +751,7 @@ function renderVocab(mode){
     <button class="btn ghost ${mode==="pool"?"":"ghost"}" data-vt="pool" style="${mode==="pool"?"background:linear-gradient(135deg,var(--mist),#242c42);color:#fff":""}">生词本 ${S.pool.length}</button></div></div>`;
   if(mode==="new"){
     if(!S.curWords.length){
-      html+=`<div class="card"><h3>词库已用完 🈵</h3><p class="mut">当前词库 ${BANK.length} 词已全部发完。去「设置 → 一键导入 ECDICT 万词库」扩容到 10000 词，或点击下面开始第二轮复习。</p><button class="btn" onclick="S.cursor=0;S.learned={};save();render()">🔁 开始第二轮</button></div>`;
+      html+=`<div class="card"><h3>词库已用完 🈵</h3><p class="mut">当前词库 ${BANK.length} 词已全部发完。去「设置 → 一键导入 ECDICT 万词库」扩容到 10000 词，或点击下面开始第二轮复习。</p><button class="btn" onclick="S.wQueue=[];S.learned={};S.dealt='';save();location.reload()">🔁 开始第二轮</button></div>`;
     }else if(!unseen.length){
       html+=`<div class="card"><h3>✅ 今日 ${S.curWords.length} 个新词已完成 +30 XP</h3><p class="mut">明天这里会出现新的 ${S.dailyN} 个词。记得去“复习昨日”做小测验。</p></div>`;
     }else{
@@ -1023,7 +1047,10 @@ addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferred=e;$("#ins
 $("#installBtn").onclick=()=>{if(deferred){deferred.prompt();deferred=null}else toast("请通过浏览器菜单“安装应用/添加到主屏幕”安装")};
 if("serviceWorker"in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("sw.js").catch(()=>{});
 try{const ext=JSON.parse(localStorage.getItem("toeflExt")||"[]");if(Array.isArray(ext)&&ext.length){mergeBank(ext);}}catch(e){}
-fetch("words.json").then(r=>r.ok?r.json():null).then(d=>{if(Array.isArray(d)&&d.length){mergeBank(d);render()}}).catch(()=>{});
+fetch("words.json").then(r=>r.ok?r.json():null).then(d=>{
+  if(Array.isArray(d)&&d.length)mergeBank(d);
+  BANK_READY=true;maybeDeal();render();
+}).catch(()=>{BANK_READY=true;maybeDeal();render()});
 fetch("articles.json?_t="+Date.now())
   .then(r=>r.ok?r.json():null)
   .then(d=>{
