@@ -588,7 +588,7 @@ days:[
 };
 const STAGES=[["y1","大一 · 夯实基础","听说 + 词汇打底，5–6h/周"],["y2a","大二上 · 技巧植入","TPO 题型逻辑，8–10h/周"],["y2b","大二下 · 首考准备","限时 + 模考，10–12h/周"],["y3w","大三 · 弱项攻坚","口语写作专项，14–16h/周"],["y3m","大三 · 考前4周","每周 2 套模考冲刺"]];
 const DOW=["周一","周二","周三","周四","周五","周六","周日"];
-const TABS=[["today","🏠 今日"],["vocab","📚 词汇"],["sent","✍️ 句子"],["art","📄 文章"],["week","🗓 周计划"],["rev","🧭 复盘"],["set","⚙️ 设置"]];
+const TABS=[["today","🏠 今日"],["vocab","📚 词汇"],["listen","🎧 听力"],["sent","✍️ 句子"],["art","📄 文章"],["week","🗓 周计划"],["rev","🧭 复盘"],["set","⚙️ 设置"]];
 
 /* ============ 4. 状态 ============ */
 const LS="toeflV1";let BANK=WORDS.slice();
@@ -603,7 +603,21 @@ function parityOfMon(m){return Math.floor(Math.floor(new Date(m.getFullYear(),m.
 const $=s=>document.querySelector(s);
 function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("show"),2600)}
 function addXP(n){S.xp+=n;save();$("#xpN").textContent=S.xp}
-function speak(txt){try{const u=new SpeechSynthesisUtterance(txt);u.lang="en-US";u.rate=.9;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+let VOICES=[];
+function loadVoices(){try{VOICES=speechSynthesis.getVoices()||[]}catch(e){}}
+if("speechSynthesis" in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
+function speak(txt,onend){
+  try{
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(txt);
+    u.lang="en-US";
+    const pick=VOICES.find(v=>v.voiceURI===S.voice)||VOICES.find(v=>/^en/i.test(v.lang)&&/natural|online|premium|enhanced|google/i.test(v.name))||VOICES.find(v=>/^en[-_]US/i.test(v.lang));
+    if(pick){u.voice=pick;u.lang=pick.lang}
+    u.rate=S.spd||0.9;u.pitch=1;
+    if(onend)u.onend=onend;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
 function beep(){try{const c=new (window.AudioContext||window.webkitAudioContext)();const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=784;g.gain.setValueAtTime(.12,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.8);o.start();o.stop(c.currentTime+.8)}catch(e){}}
 
 function mergeBank(arr){
@@ -674,7 +688,7 @@ function render(){
     return;
   }
   ensureDay();
-  ({today:renderToday,vocab:renderVocab,sent:renderSent,art:renderArt,week:renderWeek,rev:renderRev,set:renderSet})[view]();
+  ({today:renderToday,vocab:renderVocab,listen:renderListen,sent:renderSent,art:renderArt,week:renderWeek,rev:renderRev,set:renderSet})[view]();
 }
 function updateHUD(){
   const td=dk(new Date());const done=S.checkins[td]&&S.checkins[td].done;
@@ -694,9 +708,20 @@ function coreTasks(){
   return[
    {id:"c0",name:`背新词 ${S.dailyN} 个（今日进度 ${seen}/${S.curWords.length||S.dailyN}）`,done:!!c.tasks.c0,go:"vocab"},
    {id:"c1",name:"复盘昨天的单词（小测验）",done:!!c.tasks.c1,go:"vocab"},
+   {id:"c4",name:"听力四步精听（逐句听写 + 跟读）",done:!!c.tasks.c4,go:"listen"},
    {id:"c2",name:"阅读今日文章：" + (a?a.title:""),done:!!c.tasks.c2,go:"art"},
    {id:"c3",name:"学习今日句子（跟读 5 句）",done:!!c.tasks.c3,go:"sent"}
   ];
+}
+/* 阶段任务 → 跳转页面映射 */
+function taskGo(t){
+  if(/精听|Conversation|Lecture|泛听|听力/.test(t))return "listen";
+  if(/跟读|复述|口语/.test(t))return "listen";
+  if(/词汇/.test(t))return "vocab";
+  if(/阅读|文章/.test(t))return "art";
+  if(/长难句|句子/.test(t))return "sent";
+  if(/复盘/.test(t))return "rev";
+  return "";
 }
 function renderToday(){
   const p=PLANS[S.stage],td=dk(new Date());
@@ -721,7 +746,10 @@ function renderToday(){
     ${cores.map(x=>`<label class="task ${x.done?"done":""}"><input type="checkbox" ${x.done?"checked":""} data-core="${x.id}"><span>${x.name}</span><button class="dur" data-gov="${x.go}">前往 →</button></label>`).join("")}
   </div>
   <div class="card"><h3>${DOW[dow]} · 阶段任务</h3>
-    ${d.t.map((t,i)=>`<label class="task ${c.tasks["p"+i]?"done":""}"><input type="checkbox" ${c.tasks["p"+i]?"checked":""} data-p="${i}"><span>${t}</span></label>`).join("")}
+    ${d.t.map((t,i)=>{
+      const g=taskGo(t);
+      return `<label class="task ${c.tasks["p"+i]?"done":""}"><input type="checkbox" ${c.tasks["p"+i]?"checked":""} data-p="${i}"><span>${t}</span>${g?`<button class="dur" data-gov="${g}">前往 →</button>`:""}</label>`
+    }).join("")}
     <div class="mut" style="margin-top:6px">⏱ 今日时长：${d.dur}</div>
   </div>`;
   $("#ck").onclick=()=>{
@@ -755,7 +783,7 @@ function renderVocab(mode){
     }else if(!unseen.length){
       html+=`<div class="card"><h3>✅ 今日 ${S.curWords.length} 个新词已完成 +30 XP</h3><p class="mut">明天这里会出现新的 ${S.dailyN} 个词。记得去“复习昨日”做小测验。</p></div>`;
     }else{
-      const i=unseen[0],w=BANK[i];const ex=w[3]||"";
+            const i=unseen[0],w=BANK[i];const ex=isRealSentence(w[3])?w[3]:"";
       html+=`<div class="paper wcard">
         <div class="w">${w[0]}</div>
         ${w[4]?`<div class="ph">/${w[4]}/</div>`:""}
@@ -821,15 +849,27 @@ function renderVocab(mode){
 }
 
 /* ---- 句子 ---- */
+/* 判断是真例句还是词典释义（如 "n. a structure from which..."） */
+function isRealSentence(s){
+  if(!s||s.length<35)return false;
+  const t=s.trim();
+  if(/^[a-z]/.test(t))return false;
+  if(/^(n|v|a|adj|adv|prep|conj|pron|art|num|int|vi|vt)\b\.?\s/i.test(t))return false;
+  if((t.match(/;/g)||[]).length>=2)return false;
+  if(!/[.!?]$/.test(t))return false;
+  return t.split(/\s+/).length>=6;
+}
 function todaySentences(){
   const out=[];
-  S.curWords.filter(i=>BANK[i]&&BANK[i][3]&&BANK[i][3].length>40).slice(0,4)
+  S.curWords.filter(i=>BANK[i]&&isRealSentence(BANK[i][3])).slice(0,4)
     .forEach(i=>out.push({s:BANK[i][3],w:BANK[i][0],d:BANK[i][2],src:"今日词汇"}));
   const a=ARTICLES[S.artToday?S.artToday.idx:0];
-  if(a){[1,2,3,4,5].forEach(p=>{if(out.length<7&&a.paras[p]){
-    const first=(a.paras[p].match(/[^.!?]+[.!?]/)||[""])[0].trim();
-    if(first.length>30){const term=(a.terms||[]).map(t=>t[0]).find(t=>first.toLowerCase().includes(t.toLowerCase()));
-      out.push({s:first,w:term,d:term?(a.terms.find(t=>t[0]===term)||[,""])[1]:"",src:"今日文章"})}}})}
+  if(a){[1,2,3,4,5,0].forEach(p=>{if(out.length<7&&a.paras[p]){
+    (a.paras[p].match(/[^.!?]+[.!?]/g)||[]).slice(0,2).forEach(first=>{
+      first=first.trim();
+      if(out.length<7&&first.length>30){const term=(a.terms||[]).map(t=>t[0]).find(t=>first.toLowerCase().includes(t.toLowerCase()));
+        out.push({s:first,w:term,d:term?(a.terms.find(t=>t[0]===term)||[,""])[1]:"",src:"今日文章"})}
+    })}})}
   return out;
 }
 function renderSent(){
@@ -862,6 +902,78 @@ function renderArt(){
   $("#rd").onclick=()=>{if(!c.tasks.c2){c.tasks.c2=1;addXP(20);save()}render()};
 }
 
+  /* ---- 听力：四步精听（材料=今日文章，每天自动更换） ---- */
+function splitSents(paras){
+  const out=[];
+  (paras||[]).forEach(p=>{(p.match(/[^.!?]+[.!?]/g)||[]).forEach(s=>{s=s.trim();if(s.split(" ").length>=6)out.push(s)})});
+  return out.slice(0,40);
+}
+function renderListen(){
+  const a=ARTICLES[S.artToday?S.artToday.idx:0];
+  if(!a){app.innerHTML=`<div class="card"><p class="mut">今日听力材料生成中，稍后再来。</p></div>`;return}
+  const sents=splitSents(a.paras);
+  const td=dk(new Date());
+  if(!S._lst||S._lst.date!==td)S._lst={date:td,i:0,show:false,dict:{},done:{},reveal:{}};
+  const L=S._lst;
+  const c=S.checkins[td]||(S.checkins[td]={tasks:{}});
+  const cur=sents[L.i]||sents[0]||"";
+  app.innerHTML=`
+  <div class="card"><h2>🎧 今日听力 · 四步精听</h2>
+  <p class="mut">材料与今日文章同步，每天自动更换 ·《${a.title}》· ${a.cat}<br>
+  四步法：① 点「整篇盲听」（原文默认隐藏）→ ② 逐句播放 + 听写 → ③ 「对照答案」自动批改 → ④ 跟读三遍后点「跟读✓」。</p>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+    <button class="btn blue" id="lp">▶ 整篇盲听</button>
+    <button class="btn ghost" id="lstop">■ 停止</button>
+    <button class="btn ghost" id="lshow">${L.show?"🙈 隐藏原文":"👁 显示原文"}</button>
+    <span class="chip">语速 ${S.spd||0.9}x</span>
+    <button class="mini" data-spd="0.8">0.8x</button>
+    <button class="mini" data-spd="0.9">0.9x</button>
+    <button class="mini" data-spd="1">1.0x</button>
+    <button class="mini" data-spd="1.2">1.2x</button>
+  </div></div>
+  <div class="card"><h3>逐句精听（第 ${L.i+1} / ${sents.length} 句）</h3>
+    <div class="snt">${L.show?`<div class="en">${cur}</div>`:`<div class="mut">原文已隐藏（盲听模式）。听写完成后再「显示原文」对照。</div>`}
+      <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">
+        <button class="mini" id="lplay">🔊 播放本句</button>
+        <button class="mini" id="lprev">⏮ 上一句</button>
+        <button class="mini" id="lnext">⏭ 下一句</button>
+        ${L.done[L.i]?`<span class="chip" style="color:var(--ok)">已跟读 ✓</span>`:`<button class="mini" id="lrep">跟读 ✓</button>`}
+      </div>
+    </div>
+    <h3>✏️ 听写区（第 ${L.i+1} 句）</h3>
+    <textarea id="ldict" rows="3" placeholder="播放本句，把你听到的写下来……">${L.dict[L.i]||""}</textarea>
+    <div style="display:flex;gap:8px;align-items:center;margin-top:6px">
+      <button class="btn blue" id="lcheck">对照答案</button>
+      ${L.reveal[L.i]?`<button class="btn ghost" id="lnext2">下一句 →</button>`:""}
+    </div>
+    ${L.reveal[L.i]?`<div class="snt" style="margin-top:8px"><div class="en"><b>原文：</b>${cur}</div><div class="mut">听写词数正确率：${score(L.dict[L.i]||"",cur)}%</div></div>`:""}
+  </div>
+  <div class="card"><h3>收尾</h3>
+  <p class="mut">整篇跟读 5 分钟（点「整篇盲听」跟着声音读），完成后打卡。</p>
+  <button class="btn" id="lfin">${c.tasks.c4?"今日听力已完成 ✓":"完成今日听力（+20 XP）"}</button></div>`;
+  function score(my,orig){
+    const norm=s=>s.toLowerCase().replace(/[^a-z\s]/g,"").split(/\s+/).filter(Boolean);
+    const A=norm(orig),B=norm(my);let hit=0;
+    A.forEach(w=>{const j=B.indexOf(w);if(j>-1){hit++;B.splice(j,1)}});
+    return A.length?Math.round(hit/A.length*100):0;
+  }
+  $("#lp").onclick=()=>{
+    let k=0;L.playing=true;
+    const step=()=>{if(!L.playing||k>=sents.length)return;speak(sents[k++],step)};
+    step();
+  };
+  $("#lstop").onclick=()=>{L.playing=false;try{speechSynthesis.cancel()}catch(e){}};
+  $("#lshow").onclick=()=>{L.show=!L.show;save();renderListen()};
+  app.querySelectorAll("[data-spd]").forEach(b=>b.onclick=()=>{S.spd=+b.dataset.spd;save();renderListen()});
+  $("#lplay").onclick=()=>speak(cur);
+  $("#lprev").onclick=()=>{if(L.i>0){L.i--;save();renderListen()}};
+  $("#lnext").onclick=()=>{if(L.i<sents.length-1){L.i++;save();renderListen()}};
+  $("#lnext2").onclick=()=>{if(L.i<sents.length-1){L.i++;save();renderListen()}};
+  $("#lrep").onclick=()=>{L.done[L.i]=1;save();renderListen()};
+  $("#ldict").oninput=e=>{L.dict[L.i]=e.target.value};
+  $("#lcheck").onclick=()=>{L.reveal[L.i]=1;save();renderListen()};
+  $("#lfin").onclick=()=>{if(!c.tasks.c4){c.tasks.c4=1;addXP(20);save()}render()};
+}
 /* ---- 周计划 ---- */
 function renderWeek(){
   const p=PLANS[S.stage],mon=weekMonday(new Date()),par=parityOfMon(mon);
@@ -918,6 +1030,15 @@ function renderSet(){
   <button class="btn blue" id="ecsel">选择 ecdict.csv，开始转换</button>
   <input type="file" id="ecfile" accept=".csv" style="display:none">
   <div id="ecst" class="mut"></div>
+  <h3>🎙️ 语音包（朗读发音）</h3>
+  <p class="mut">选一个更自然、有感情的英文语音。电脑端强烈推荐用 <b>Edge 浏览器</b> 打开本应用（自带 Microsoft 在线自然语音，最像真人）。</p>
+  <select id="vs"></select>
+  <div style="display:flex;gap:8px;align-items:center;margin-top:4px">
+    <span class="mut">全局语速</span>
+    <select id="vr"><option value="0.8">0.8x（慢速跟读）</option><option value="0.9">0.9x（默认）</option><option value="1">1.0x（原速）</option><option value="1.2">1.2x（提速）</option></select>
+  </div>
+  <button class="btn blue" id="vt2">🔊 试听当前语音</button>
+  <p class="mut">安装更拟真语音包：<br>· Windows：设置 → 时间和语言 → 语音 → 添加语音（如 Aria）<br>· iPhone：设置 → 辅助功能 → 朗读内容 → 声音 → English → 下载“增强版/高级版”<br>· 安卓：设置 → Google 文字转语音 → 安装高音质语音数据<br>· Mac：系统设置 → 辅助功能 → 朗读内容 → 系统声音选英文语音</p>
   <h3>数据备份</h3><p class="mut">打卡记录存在本机浏览器里。换设备前请导出，再在新设备导入。</p>
   <button class="btn blue" id="ex">导出数据</button>
   <label class="btn ghost" style="display:inline-block">导入数据<input type="file" id="im" accept=".json" style="display:none"></label>
@@ -931,6 +1052,16 @@ function renderSet(){
   app.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{S.reminders.splice(+b.dataset.rm,1);save();renderSet()});
   $("#nb").onclick=async()=>{if(!("Notification"in window))return toast("此浏览器不支持通知");const p=await Notification.requestPermission();toast("通知权限："+p);renderSet()};
   $("#nt").onclick=()=>fireNotif("🍷 测试通知","如果你能看到这条，说明桌面提醒已生效！");
+  loadVoices();
+  const vs=$("#vs");
+  if(vs){
+    const list=VOICES.filter(v=>/^en/i.test(v.lang));
+    vs.innerHTML=list.length?list.map(v=>`<option value="${v.voiceURI}" ${S.voice===v.voiceURI?"selected":""}>${v.name}（${v.lang}）</option>`).join(""):`<option value="">当前浏览器没有英文语音，建议换 Edge/Chrome 打开</option>`;
+    vs.onchange=()=>{S.voice=vs.value;save();toast("语音已切换，点「试听」听听看")};
+    const vr=$("#vr");vr.value=String(S.spd||0.9);
+    vr.onchange=()=>{S.spd=+vr.value;save();toast("语速已调整")};
+    $("#vt2").onclick=()=>speak("This is how your daily listening will sound. Are you ready for TOEFL today?");
+  }
   $("#ex").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:"application/json"}));a.download="toefl-backup.json";a.click()};
   $("#im").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{S=Object.assign(def(),JSON.parse(r.result));save();location.reload()}catch(x){toast("文件格式不对")}};r.readAsText(f)};
   $("#rs").onclick=()=>{if(confirm("确定清空所有打卡记录、进度和设置？（words.json 文件里的词库不受影响）")){localStorage.removeItem(LS);localStorage.removeItem("toeflExt");location.reload()}};
