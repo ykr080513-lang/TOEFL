@@ -1,4 +1,4 @@
-const CACHE = "toefl-v7";
+const CACHE = "toefl-v8";
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(["./", "./index.html", "./manifest.json", "./icon.svg"])).then(() => self.skipWaiting()));
 });
