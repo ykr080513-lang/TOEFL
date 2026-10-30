@@ -108,12 +108,11 @@ textarea,input[type=text],input[type=time],select{width:100%;padding:8px 10px;bo
 <main id="app"></main>
 <div class="toast" id="toast"></div>
 <script>
-/* ============ 1. 内置起步词库（240 词；主力词库由 ECDICT 导入，见“设置”页） ============ */
+/* ============ 1. 内置起步词库（主力词库由 words.json 提供） ============ */
 const WORDS=[
 ["abandon","v.","放弃；抛弃","The crew abandoned the sinking ship."],
 ["abrupt","adj.","突然的；陡峭的","The climate shift was abrupt, not gradual."],
 ["accelerate","v.","加速","Heat accelerates the decay of organic matter."],
-["accommodate","v.","容纳；为…提供空间","The hall accommodates five hundred students."],
 ["accumulate","v.","积累；积聚","Sediments accumulate on the ocean floor."],
 ["accurate","adj.","精确的；准确的","Accurate records date back to 1659."],
 ["acknowledge","v.","承认；致谢","The author acknowledges the debate is unresolved."],
@@ -133,12 +132,10 @@ const WORDS=[
 ["ancestor","n.","祖先；先祖","These bones belonged to a common ancestor."],
 ["anticipate","v.","预期；预料","Researchers anticipated strong public resistance."],
 ["apparent","adj.","明显的；表面上的","The gap between rich and poor became apparent."],
-["apply","v.","应用；申请","The theory applies to most ecosystems."],
 ["approach","n.","方法 v. 接近","She took a scientific approach to cooking."],
 ["arbitrary","adj.","任意的；武断的","The border was drawn along arbitrary lines."],
 ["arid","adj.","干旱的；贫瘠的","Arid lands cover a third of the continent."],
 ["array","n.","一系列；大批","The museum displays an array of artifacts."],
-["ascend","v.","上升；攀登","The hikers ascend the ridge before sunrise."],
 ["assemble","v.","集合；组装","Workers assemble the parts on a moving line."],
 ["assert","v.","断言；坚称","The paper asserts that sleep aids memory."],
 ["assess","v.","评估；评定","Teachers assess progress through weekly quizzes."],
@@ -609,7 +606,6 @@ function addXP(n){S.xp+=n;save();$("#xpN").textContent=S.xp}
 function speak(txt){try{const u=new SpeechSynthesisUtterance(txt);u.lang="en-US";u.rate=.9;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
 function beep(){try{const c=new (window.AudioContext||window.webkitAudioContext)();const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=784;g.gain.setValueAtTime(.12,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.8);o.start();o.stop(c.currentTime+.8)}catch(e){}}
 
-/* 词库合并：任何来源（words.json / ECDICT 导入）都走这里，按单词去重 */
 function mergeBank(arr){
   const known=new Set(BANK.map(w=>String(w[0]).toLowerCase()));
   let add=0;
@@ -622,8 +618,7 @@ function mergeBank(arr){
   return add;
 }
 
-/* 每日滚动 */
-/* 每日滚动：发新词 + 选文章（修复版：确保能读到动态追加的新文章） */
+/* 每日滚动（修复版：支持动态新增的文章） */
 function ensureDay(){
   const td=dk(new Date());
   if(S.curDate!==td){
@@ -632,17 +627,14 @@ function ensureDay(){
     S.curDate=td;S.notified={};
     save();
   }
-  // 如果今日文章不存在，或者队列空了，重新洗牌文章索引（基于当前总文章数 ARTICLES.length）
-  if(!S.artToday || S.artToday.date!==td){
-    if(!S.artQueue || !S.artQueue.length){
+  if(!S.artToday||S.artToday.date!==td){
+    if(!S.artQueue||!S.artQueue.length){
       S.artQueue=shuf(ARTICLES.map((_,i)=>i));
       S.artRound=(S.artRound||0)+1;
     }
     S.artToday={date:td,idx:S.artQueue.pop()};
     save();
   }
-}
-  save();
 }
 function nextWords(){const arr=[];for(let i=0;i<S.dailyN&&S.cursor<BANK.length;i++)arr.push(S.cursor++);return arr}
 
@@ -838,7 +830,7 @@ function renderArt(){
     let h=p;(a.terms||[]).forEach(t=>{h=h.replace(new RegExp(t[0].replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"gi"),m=>`<b>${m}</b>`)});
     return `<p>${h}</p>`}).join("");
   app.innerHTML=`<div class="card" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:center">
-    <div><b>${a.cat}</b> · 约 ${wc} 词 · 第 ${S.artRound} 轮 · 剩余未读 ${S.artQueue.length+1} 篇</div>
+    <div><b>${a.cat}</b> · 约 ${wc} 词 · 第 ${S.artRound} 轮 · 总共 ${ARTICLES.length} 篇 · 剩余未读 ${S.artQueue.length} 篇</div>
     <button class="btn" id="rd">${c.tasks.c2?"已读 ✓":"标记已读（+20 XP）"}</button></div>
   <div class="paper"><h2 style="font-size:22px;margin:0 0 4px">${a.title}</h2>
   <div style="margin-bottom:12px">${(a.terms||[]).map(t=>`<span class="term">${t[0]} ${t[1]}</span>`).join("")}</div>
@@ -897,8 +889,8 @@ function renderSet(){
   <h3>桌面通知</h3><p class="mut">点击“开启提醒”，并在弹窗中允许通知。应用保持打开（可最小化/后台）时，到点会弹出系统通知。</p>
   <button class="btn" id="nb">${("Notification"in window)?("权限："+Notification.permission):"此浏览器不支持通知"}</button>
   <button class="btn blue" id="nt">发送测试通知</button>
-  <h3>📦 一键导入 ECDICT 万词库（扩到 10000 词）</h3>
-  <p class="mut">先去 <a href="https://github.com/skywind3000/ECDICT" target="_blank" style="color:var(--wineL)">github.com/skywind3000/ECDICT</a> 下载仓库根目录的 <b>ecdict.csv</b>（约几十 MB；打不开 GitHub 可用加速镜像下载 raw 链接）。然后点下面按钮选中该文件：浏览器会在本机解析（约 10–30 秒，建议在电脑上操作），自动筛选「托福标签词优先 + 考研/雅思/GRE 按词频补齐」，凑齐 10000 词并合并进词库，同时为你生成一份 words.json（放进网页目录或上传到 GitHub 仓库，手机端就也能用）。</p>
+  <h3>📦 一键导入 ECDICT 万词库</h3>
+  <p class="mut">从 <a href="https://github.com/skywind3000/ECDICT" target="_blank" style="color:var(--wineL)">github.com/skywind3000/ECDICT</a> 下载 ecdict.csv 后，点下面按钮选择该文件，浏览器会自动筛选并合并词库，同时生成一份 words.json 供上传。</p>
   <button class="btn blue" id="ecsel">选择 ecdict.csv，开始转换</button>
   <input type="file" id="ecfile" accept=".csv" style="display:none">
   <div id="ecst" class="mut"></div>
@@ -907,9 +899,7 @@ function renderSet(){
   <label class="btn ghost" style="display:inline-block">导入数据<input type="file" id="im" accept=".json" style="display:none"></label>
   <button class="btn ghost" id="rs" style="color:var(--wineL)">清空全部数据</button>
   <h3>词库 / 文章进度</h3>
-  <p class="mut" id="stat">词库：已学 ${Object.keys(S.learned).length} / ${BANK.length}（每天 ${S.dailyN} 个不重复；其中内置 ${WORDS.length} + 导入 ${BANK.length-WORDS.length}）<br>文章：已读 ${S.artRound?Math.max(0,S.artRound*ARTICLES.length-S.artQueue.length-1):0} 篇，内置 ${ARTICLES.length} 篇</p>
-  <h3>手动扩容（不用 ECDICT 也行）</h3>
-  <p class="mut">在网页同目录放一个 <b>words.json</b>（数组，每项 2–5 列，后几列可留空）：<br>[["absolute","adj.","绝对的；完全的","We have absolute confidence.","ˈæbsəluːt"]] —— 页面打开时自动合并、按单词去重。<br>文章同理：<b>articles.json</b>：[{"title":"标题","cat":"分类","terms":[["term","释义"]],"paras":["第一段","第二段"]}]</p>
+  <p class="mut" id="stat">词库：已学 ${Object.keys(S.learned).length} / ${BANK.length}（每天 ${S.dailyN} 个不重复；内置 ${WORDS.length} + 导入 ${BANK.length-WORDS.length}）<br>文章：当前共 ${ARTICLES.length} 篇</p>
   </div>`;
   app.querySelectorAll("[data-st]").forEach(el=>el.onclick=()=>{S.stage=el.dataset.st;save();toast("已切换到 "+PLANS[S.stage].name);go("today")});
   $("#dn").onchange=e=>{S.dailyN=+e.target.value;save();toast("每日新词数已改为 "+S.dailyN)};
@@ -919,23 +909,22 @@ function renderSet(){
   $("#nt").onclick=()=>fireNotif("🍷 测试通知","如果你能看到这条，说明桌面提醒已生效！");
   $("#ex").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:"application/json"}));a.download="toefl-backup.json";a.click()};
   $("#im").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{S=Object.assign(def(),JSON.parse(r.result));save();location.reload()}catch(x){toast("文件格式不对")}};r.readAsText(f)};
-  $("#rs").onclick=()=>{if(confirm("确定清空所有打卡记录、进度和设置？（导入的词库也会一并清除）")){localStorage.removeItem(LS);localStorage.removeItem("toeflExt");location.reload()}};
-  /* ECDICT 一键导入 */
+  $("#rs").onclick=()=>{if(confirm("确定清空所有打卡记录、进度和设置？（导入的词库也会一并清除，但 words.json 文件里的词库不受影响）")){localStorage.removeItem(LS);localStorage.removeItem("toeflExt");location.reload()}};
   $("#ecsel").onclick=()=>$("#ecfile").click();
   $("#ecfile").onchange=e=>{
     const f=e.target.files[0];if(!f)return;
     $("#ecst").textContent="📖 读取文件中（"+(f.size/1048576).toFixed(1)+" MB）……";
     const r=new FileReader();
     r.onload=()=>{
-      $("#ecst").textContent="⚙️ 正在解析 76 万词条并筛选，请勿关闭页面（约 10–30 秒）……";
+      $("#ecst").textContent="⚙️ 正在解析并筛选，请勿关闭页面（约 10–30 秒）……";
       setTimeout(()=>{
         try{
           const bank=ecdictToBank(parseCSV(String(r.result).replace(/^\uFEFF/,"")));
-          if(!bank.length){$("#ecst").textContent="⚠️ 没筛出单词：请确认选择的是 ECDICT 的 ecdict.csv（不是别的 csv）";return}
+          if(!bank.length){$("#ecst").textContent="⚠️ 没筛出单词：请确认选择的是 ECDICT 的 ecdict.csv";return}
           mergeBank(bank);
           let stored=true;
           try{localStorage.setItem("toeflExt",JSON.stringify(bank))}catch(err){stored=false}
-          $("#ecst").textContent="✅ 成功导入 "+bank.length+" 词，当前总词库 "+BANK.length+" 词"+(stored?"（已保存在本机，下次打开自动加载）":"（本机存储空间不足，仅本次有效——请务必保存正在下载的 words.json）");
+          $("#ecst").textContent="✅ 成功导入 "+bank.length+" 词，当前总词库 "+BANK.length+" 词"+(stored?"（已保存在本机）":"（本机空间不足，仅本次有效）");
           const a=document.createElement("a");
           a.href=URL.createObjectURL(new Blob([JSON.stringify(bank)],{type:"application/json"}));
           a.download="words.json";a.click();
@@ -948,7 +937,7 @@ function renderSet(){
   };
 }
 
-/* ---- ECDICT 解析器（CSV 状态机 + 托福筛选） ---- */
+/* ---- ECDICT 解析器 ---- */
 function parseCSV(text){
   const rows=[];let row=[],field="",q=false;
   for(let i=0;i<text.length;i++){
@@ -1033,25 +1022,32 @@ let deferred=null;
 addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferred=e;$("#installBtn").style.display="";$("#installBtn").textContent="安装到本机"});
 $("#installBtn").onclick=()=>{if(deferred){deferred.prompt();deferred=null}else toast("请通过浏览器菜单“安装应用/添加到主屏幕”安装")};
 if("serviceWorker"in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("sw.js").catch(()=>{});
-/* 词库加载顺序：本机导入缓存 → words.json → （可选 articles.json） */
 try{const ext=JSON.parse(localStorage.getItem("toeflExt")||"[]");if(Array.isArray(ext)&&ext.length){mergeBank(ext);}}catch(e){}
 fetch("words.json").then(r=>r.ok?r.json():null).then(d=>{if(Array.isArray(d)&&d.length){mergeBank(d);render()}}).catch(()=>{});
-fetch("articles.json?t=" + Date.now()).then(r => r.ok ? r.json() : null).then(d => {
-  if (Array.isArray(d) && d.length) {
-    const oldLen = ARTICLES.length;
-    ARTICLES.push(...d);
-    // 把新抓取到的文章序号立刻追加进当轮待读队列中
-    if (S.artQueue) {
-      for (let i = oldLen; i < ARTICLES.length; i++) {
-        if (!S.artQueue.includes(i) && (!S.artToday || S.artToday.idx !== i)) {
-          S.artQueue.push(i);
+fetch("articles.json?_t="+Date.now())
+  .then(r=>r.ok?r.json():null)
+  .then(d=>{
+    if(Array.isArray(d)&&d.length){
+      const oldLen=ARTICLES.length;
+      const knownTitles=new Set(ARTICLES.map(a=>a.title));
+      d.forEach(a=>{
+        if(a&&a.title&&!knownTitles.has(a.title)){
+          ARTICLES.push(a);knownTitles.add(a.title);
         }
+      });
+      if(ARTICLES.length>oldLen){
+        if(!S.artQueue)S.artQueue=[];
+        for(let i=oldLen;i<ARTICLES.length;i++){
+          if(!S.artQueue.includes(i)&&(!S.artToday||S.artToday.idx!==i)){
+            S.artQueue.push(i);
+          }
+        }
+        save();
+        render();
       }
-      save();
     }
-    if (view === "art" || view === "today") render();
-  }
-}).catch(() => {});
+  })
+  .catch(()=>{});
 $("#tabs").innerHTML=TABS.map(t=>`<button data-v="${t[0]}">${t[1]}</button>`).join("");
 document.querySelectorAll("#tabs button").forEach(b=>b.onclick=()=>go(b.dataset.v));
 render();
