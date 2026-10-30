@@ -1,5 +1,29 @@
 [
   {
+    "title": "Atmosphere of Mars",
+    "cat": "Astronomy & Space Science",
+    "terms": [
+      [
+        "atmosphere",
+        "大气层"
+      ],
+      [
+        "oxygen",
+        "氧气"
+      ],
+      [
+        "carbon",
+        "碳"
+      ]
+    ],
+    "paras": [
+      "The atmosphere of Mars is the layer of gasses surrounding the planet Mars. It is primarily composed of carbon dioxide (95%), molecular nitrogen (2.85%), and argon (2%). It also contains trace levels of water vapor, oxygen, carbon monoxide, hydrogen, and noble gases. The atmosphere of Mars is much colder and thinner than Earth's, with an average temperature of −59 °C (−74 °F), and a surface pressure of about 610 pascals (0.088 psi), which is about 0.6% of the Earth's value.",
+      "The density at the surface of Mars varies between about 10 and 20 g/m3, which is only 1–2% of Earth's value. The density is about 25% lower during the southern winter than in spring and autumn because carbon dioxide freezes into a dry ice cap at the south pole, an effect that is smaller during the northern winter because of the highly eccentric orbit of Mars. The low pressure of the Martian atmosphere prohibits the existence of liquid water on the surface of Mars, but many studies suggest that the Martian atmosphere was much thicker in the past. The atmosphere of Mars has been losing mass to space since the planet's core slowed down, and the leakage of gases continues today.",
+      "The atmosphere of Mars is colder than Earth's owing to the larger distance from the Sun, receiving less solar energy and has a lower effective temperature, which is about 210 K (−63 °C; −82 °F). The average surface emission temperature of Mars is just 215 K (−58 °C; −73 °F), which is comparable to inland Antarctica. Although Mars's atmosphere consists primarily of carbon dioxide, the greenhouse effect in the Martian atmosphere is much weaker than Earth's: 5 °C (9.0 °F) on Mars, versus 33 °C (59 °F) on Earth due to the much lower density of carbon dioxide, leading to less greenhouse warming. Furthermore, the Martian atmosphere contains much less water vapor than Earth's atmosphere, and water vapor is another important contributor to the greenhouse effect. The daily range of temperature in the lower atmosphere presents ample variation due to the low thermal inertia; it can range from −75 °C (−103 °F) to near 0 °C (32 °F) near the surface in some regions. The temperature of the upper part of the Martian atmosphere is also significantly lower than Earth's because of the absence of stratospheric ozone and the radiative cooling effect of carbon dioxide at higher altitudes.",
+      "Dust devils and dust storms are prevalent on Mars, which are sometimes observable by telescopes from Earth, and in 2018 even with the naked eye as a change in colour and brightness of the planet. Planet-encircling dust storms (global dust storms) occur on average every 5.5 Earth years (every 3 Martian years) on Mars and can threaten the operation of Mars rovers. However, the mechanism responsible for the development of large dust storms is still not well understood. It has been suggested to be loosely related to gravitational influence of both moons, somewhat similar to the creation of tides on Earth."
+    ]
+  },
+  {
     "title": "Pollination",
     "cat": "Biology & Ecology",
     "terms": [
