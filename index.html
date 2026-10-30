@@ -623,16 +623,25 @@ function mergeBank(arr){
 }
 
 /* 每日滚动 */
+/* 每日滚动：发新词 + 选文章（修复版：确保能读到动态追加的新文章） */
 function ensureDay(){
   const td=dk(new Date());
-  if(S.curDate===td)return;
-  const finished=!S.curWords.length||S.curWords.every(i=>S.learned[i]);
-  if(finished){S.prevWords=S.curWords.slice();S.curWords=nextWords()}
-  S.curDate=td;S.notified={};
-  if(!S.artToday||S.artToday.date!==td){
-    if(!S.artQueue.length){S.artQueue=shuf(ARTICLES.map((_,i)=>i));S.artRound++}
-    S.artToday={date:td,idx:S.artQueue.pop()}
+  if(S.curDate!==td){
+    const finished=!S.curWords.length||S.curWords.every(i=>S.learned[i]);
+    if(finished){S.prevWords=S.curWords.slice();S.curWords=nextWords()}
+    S.curDate=td;S.notified={};
+    save();
   }
+  // 如果今日文章不存在，或者队列空了，重新洗牌文章索引（基于当前总文章数 ARTICLES.length）
+  if(!S.artToday || S.artToday.date!==td){
+    if(!S.artQueue || !S.artQueue.length){
+      S.artQueue=shuf(ARTICLES.map((_,i)=>i));
+      S.artRound=(S.artRound||0)+1;
+    }
+    S.artToday={date:td,idx:S.artQueue.pop()};
+    save();
+  }
+}
   save();
 }
 function nextWords(){const arr=[];for(let i=0;i<S.dailyN&&S.cursor<BANK.length;i++)arr.push(S.cursor++);return arr}
