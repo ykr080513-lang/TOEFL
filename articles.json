@@ -1,19 +1,42 @@
 [
   {
-    "title": "128,000-year-old ice in Tibet could rewrite climate history",
-    "cat": "Earth & Climate Science",
+    "title": "Permian–Triassic extinction event",
+    "cat": "Paleontology",
     "terms": [
       [
-        "evidence",
-        "证据"
+        "extinction",
+        "灭绝"
       ],
       [
-        "hypothesis",
-        "假说"
+        "atmosphere",
+        "大气层"
+      ],
+      [
+        "oxygen",
+        "氧气"
+      ],
+      [
+        "carbon",
+        "碳"
+      ],
+      [
+        "radiation",
+        "辐射"
+      ],
+      [
+        "isotope",
+        "同位素"
       ]
     ],
     "paras": [
-      "Ancient ice discovered high in Tibet may be more than 128,000 years old, preserving an extraordinary record of Earth's climate that scientists previously thought had been lost. The discovery reveals a rare glimpse into the last ice age and could reshape our understanding of how glaciers survive dramatic changes in global climate."
+      "The Permian–Triassic extinction event was an extinction event that occurred around the boundary between the Permian and Triassic geologic periods, and with them the Paleozoic and Mesozoic eras. It is Earth's most severe known extinction event, with the extinction of 57% of biological families, 62% of genera, 81% of marine species, and 70% of terrestrial vertebrate species. It is also the greatest known mass extinction of insects. It is the greatest of the \"Big Five\" mass extinctions of the Phanerozoic. There is evidence for one to three distinct pulses, or phases, of extinction, with the major pulse of marine extinction occurring in a 60,000-100,000 year interval around 251.902 million years ago (mya) marking the boundary between the Permian and Triassic periods. There is some controversy regarding the chronology of the extinctions on land and whether they are synchronous with the main marine extinction event.",
+      "The scientific consensus is that the main cause of the extinction was the flood basalt eruptions that created the Siberian Traps, which released sulfur dioxide and carbon dioxide, resulting in euxinia (oxygen-starved, sulfurous oceans), elevated global temperatures,",
+      "The level of atmospheric carbon dioxide rose from around 400 ppm to 2,500 ppm with approximately 3,900 to 12,000 gigatonnes of carbon being added to the ocean-atmosphere system during this period.",
+      "Several other contributing factors have been proposed, including the emission of carbon dioxide from the burning of oil and coal deposits ignited by the eruptions;",
+      "emissions of methane from the gasification of methane clathrates; emissions of methane by novel methanogenic microorganisms nourished by minerals dispersed in the eruptions; longer and more intense El Niño events; and an extraterrestrial impact that created the Araguainha crater and caused seismic release of methane and the destruction of the ozone layer with increased exposure to solar radiation.",
+      "Previously, it was thought that rock sequences spanning the Permian–Triassic boundary were too few and too incomplete for scientists to reliably determine their details. However, it is now possible to date the extinction with millennial precision. U–Pb zircon dates from five volcanic ash beds from the Global Stratotype Section and Point for the Permian–Triassic boundary at Meishan, China, establish a high-resolution age model for the extinction – allowing exploration of the links between global environmental perturbation, carbon cycle disruption, mass extinction, and recovery at millennial timescales. The first appearance of the conodont Hindeodus parvus has been used to delineate the Permian-Triassic boundary.",
+      "The extinction occurred between 251.941 ± 0.037 and 251.880 ± 0.031 million years ago, a duration of 60 ± 48 thousand years. A large, abrupt global decrease in δ13C, the ratio of the stable isotope carbon-13 to that of carbon-12, coincides with this extinction, and is sometimes used to identify the Permian–Triassic boundary and the Permian-Triassic Mass Extinction event (PTME) in rocks that are unsuitable for radiometric dating. The negative carbon isotope excursion's magnitude was 4–7% and lasted for approximately 500,000 years, though estimating its exact value is challenging due to diagenetic alteration of many sedimentary facies spanning the boundary.",
+      "Further evidence for environmental change around the Permian-Triassic boundary suggests an 8 °C (14 °F) rise in temperature, and an increase in CO2 levels to 2,500 ppm (for comparison, the concentration immediately before the Industrial Revolution was 280 ppm, and the amount today is about 426 ppm). There is also evidence of increased ultraviolet radiation reaching Earth, causing mutation in plant spores."
     ]
   }
 ]
