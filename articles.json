@@ -1,5 +1,27 @@
 [
   {
+    "title": "Printing press",
+    "cat": "History & Civilization",
+    "terms": [
+      [
+        "evidence",
+        "证据"
+      ],
+      [
+        "hypothesis",
+        "假说"
+      ]
+    ],
+    "paras": [
+      "A printing press is a machine that applies pressure to transfer ink onto a surface made of paper, cloth, or a similar material. Its workers are known as printing press operators. It marked a significant improvement on earlier methods, in which the paper was rubbed by hand to transfer applied ink to the printing surface.",
+      "The printing press was invented by the German goldsmith Johannes Gutenberg around 1440, and its subsequent global spread revolutionized literary production and communication during the early modern period. The spread of printing brought about an era of mass communication in European society, allowing information to quickly spread across Europe and contributing to the Reformation and the Scientific Revolution. The cost of printed texts declined and their availability increased, facilitating higher adult literacy rates across Europe. Books increasingly appeared in vernacular languages rather than Latin, and national languages were standardized.",
+      "The basic design of the wooden handpress was largely consistent for over three centuries, until the Industrial Revolution. By 1800 Lord Stanhope had built a new iron printing press printing a sheet at one pull. In 1814, The Times adopted Friedrich Koenig's new presses, which incorporated steam power and rotary motion. Richard M. Hoe's rotary printing press, introduced in 1843, enabled much higher output; later rotary presses could produce millions of page impressions in a day. During the twentieth century, the letterpress was largely replaced by offset printing, phototypesetting, and digital printing in commercial work.",
+      "Johannes Gutenberg invented the movable-type printing press around 1440, utilizing four existing technologies: the screw press, movable type, the codex book format, and mechanized paper production. The economic and cultural changes of late medieval Europe brought about viable commercial conditions for his press. The urban middle class grew alongside trade and commerce, while the growing number of universities since the twelfth century had increased demand for books. Hand-copying was slow and expensive, and by the fifteenth century, the supply of manuscripts was much less than the demand. Gutenberg integrated these four technologies into a single working system and added a number of innovations of his own, including a hand mold for casting type and an oil-based ink suited to metal type.",
+      "The first factor, the screw press, permitted direct pressure to be applied on a flat plane. Used for a variety of tasks and introduced by the Romans in the 1st century AD, it was often used by farmers for pressing grapes to make wine and olives to make oil. Gutenberg may also have been inspired by the paper presses which operated similarly to the screw press and were used across the German lands from the late 14th century. He adopted the basic design of the screw press, thereby mechanizing the printing process. Printing brought the machine different demands, and Gutenberg adapted the construction so that the platen (a flat surface) exerted even pressure across the paper with minimal smearing. Gutenberg introduced a movable undertable with a level surface on which the sheets could be swiftly changed.",
+      "Movable type is the typographical principle of writing a text from individual reusable characters. The Chinese artisan Bi Sheng invented the first movable type in the 11th century during the Song dynasty, using characters made of baked clay. Around 1300, Wang Zhen developed a set of movable wooden type, arranged on revolving tables, which he used to print a local gazetteer. Wang wrote about his invention in his agricultural treatise. Woodblock printing remained the primary method in East Asia. The oldest surviving book incorporating metal movable type is the Jikji dating to 1377, produced under the Korean state of Goryeo. However, none of the various East Asian methods gained widespread usage, largely due to their relative inefficiency. The logographic script used in China included thousands of distinct characters, resulting in high production costs for a full set of type. The Gutenberg press benefited from its use of the Latin alphabet with a relatively small set of characters."
+    ]
+  },
+  {
     "title": "Sea level rise",
     "cat": "Climate History",
     "terms": [
