@@ -1,5 +1,35 @@
 [
   {
+    "title": "Food web",
+    "cat": "Biology & Ecology",
+    "terms": [
+      [
+        "ecosystem",
+        "生态系统"
+      ],
+      [
+        "photosynthesis",
+        "光合作用"
+      ],
+      [
+        "predator",
+        "捕食者"
+      ],
+      [
+        "species",
+        "物种"
+      ]
+    ],
+    "paras": [
+      "A food web is the natural interconnection of food chains and a graphical representation of what-eats-what in an ecological community. Position in the food web, or trophic level, is used in ecology to broadly classify organisms as autotrophs or heterotrophs. This is a non-binary classification; some organisms (such as carnivorous plants) occupy the role of mixotrophs, or autotrophs that additionally obtain organic matter from non-atmospheric sources.",
+      "The linkages in a food web illustrate the feeding pathways, such as where heterotrophs obtain organic matter by feeding on autotrophs and other heterotrophs. The food web is a simplified illustration of the various methods of feeding that link an ecosystem into a unified system of exchange. There are different kinds of consumer–resource interactions that can be roughly divided into herbivory, carnivory, scavenging, and parasitism. Some of the organic matter eaten by heterotrophs, such as sugars, provides energy. Autotrophs and heterotrophs come in all sizes, from microscopic to many tonnes - from cyanobacteria to giant redwoods, and from viruses and bdellovibrio to blue whales.",
+      "Charles Elton pioneered the concept of food cycles, food chains, and food size in his classical 1927 book \"Animal Ecology\"; Elton's 'food cycle' was replaced by 'food web' in a subsequent ecological text. Elton organized species into functional groups, which was the basis for Raymond Lindeman's classic and landmark paper in 1942 on trophic dynamics. Lindeman emphasized the important role of decomposer organisms in a trophic system of classification. The notion of a food web has a historical foothold in the writings of Charles Darwin and his terminology, including an \"entangled bank\", \"web of life\", \"web of complex relations\", and in reference to the decomposition actions of earthworms he talked about \"the continued movement of the particles of earth\". Even earlier, in 1768 John Bruckner described nature as \"one continued web of life\".",
+      "Food webs are limited representations of real ecosystems as they necessarily aggregate many species into trophic species, which are functional groups of species that have the same predators and prey in a food web. Ecologists use these simplifications in quantitative (or mathematical representation) models of trophic or consumer-resource systems dynamics. Using these models they can measure and test for generalized patterns in the structure of real food web networks. Ecologists have identified non-random properties in the topological structure of food webs. Published examples that are used in meta analysis are of variable quality with omissions. However, the number of empirical studies on community webs is on the rise and the mathematical treatment of food webs using network theory had identified patterns that are common to all. Scaling laws, for example, predict a relationship between the topology of food web predator-prey linkages and levels of species richness.",
+      "Links in food webs map the feeding connections (who eats whom) in an ecological community. Food cycle is an obsolete term that is synonymous with food web.",
+      "Although complex in appearance, food webs across different environments feature recurring recognisable patterns. Ecologists can broadly group all life forms into one of two trophic layers, the autotrophs and the heterotrophs. Autotrophs produce more biomass energy, either chemically without the sun's energy or by capturing the sun's energy in photosynthesis, than they use during metabolic respiration. Heterotrophs consume rather than produce biomass energy as they metabolize, grow, and add to levels of secondary production. A food web depicts a collection of polyphagous heterotrophic consumers that network and cycle the flow of energy and nutrients from a productive base of self-feeding autotrophs."
+    ]
+  },
+  {
     "title": "Mitochondria",
     "cat": "Biology & Ecology",
     "terms": [
