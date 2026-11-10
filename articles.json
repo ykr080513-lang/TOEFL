@@ -1,5 +1,32 @@
 [
   {
+    "title": "Milankovitch cycles",
+    "cat": "Climate History",
+    "terms": [
+      [
+        "climate",
+        "气候"
+      ],
+      [
+        "evolution",
+        "演化"
+      ],
+      [
+        "radiation",
+        "辐射"
+      ]
+    ],
+    "paras": [
+      "Milankovitch cycles describe the collective effects of changes in the Earth's movements on its climate over thousands of years. The phenomenon is named after the Serbian geophysicist and astronomer Milutin Milanković. In the 1920s, he provided a more definitive and quantitative analysis than James Croll's earlier hypothesis that variations in eccentricity, axial tilt, and precession combined to result in cyclical variations in the intra-annual and latitudinal distribution of solar radiation at the Earth's surface, and that this orbital forcing strongly influenced the Earth's climatic patterns.",
+      "The Earth's rotation around its axis, and revolution around the Sun, evolve over time due to gravitational interactions with other bodies in the Solar System. The variations are complex, but a few cycles are dominant.",
+      "The Earth's orbit varies between nearly circular and mildly elliptical (its eccentricity varies). When the orbit is more elongated, there is more variation in the distance between the Earth and the Sun, and in the amount of solar radiation, at different times in the year. In addition, the tilt of the Earth's axis (its obliquity) changes slightly. A greater tilt makes the seasons more extreme. Finally, the direction in the fixed stars pointed to by the Earth's axis changes (axial precession), while the Earth's elliptical orbit around the Sun rotates (apsidal precession). The combined effect of precession with eccentricity is that proximity to the Sun occurs during different astronomical seasons.",
+      "Milankovitch studied changes in these movements of the Earth, which alter the amount and location of solar radiation reaching the Earth. This is known as solar forcing (an example of radiative forcing). Milankovitch emphasized the changes experienced at 65° north due to the great amount of land at that latitude. Land masses change surface temperature more quickly than oceans, mainly because convective mixing between shallow and deeper waters keeps the ocean surface relatively cooler. Similarly, the very large thermal inertia of the global ocean delays changes to Earth's average surface temperature when gradually driven by other forcing factors.",
+      "The Earth's orbit approximates an ellipse. Eccentricity measures the departure of this ellipse from circularity. The shape of the Earth's orbit varies between nearly circular (the eccentricity of a perfect circle is zero) and mildly elliptical (highest eccentricity was 0.0679 in the last 250 million years). Using e = 0.0679 and a = 1 AU: Perihelion ≈ 140 million km and Aphelion ≈ 160 million km, with a variance of ≈ 20 million km. This would mean a 13% variation in solar distance (and ~30% variation in solar intensity due to the inverse-square law), much more pronounced than today's ~3–7% intensity change.",
+      "Earth's eccentricity's geometric or logarithmic mean is 0.0019. The major component of these variations occurs with a period of 405,000 years (eccentricity variation of ±0.012). Other components have 95,000-year and 124,000-year cycles (with a beat period of 400,000 years). They loosely combine into a 100,000-year cycle (variation of −0.03 to +0.02). The present eccentricity is 0.0167 and decreasing.",
+      "Eccentricity varies primarily due to the gravitational pull of Jupiter and Saturn. The semi-major axis of the orbital ellipse, however, remains unchanged; according to perturbation theory, which computes the evolution of the orbit, the semi-major axis is invariant. The orbital period (the length of a sidereal year) is also invariant, because according to Kepler's third law, it is determined by the semi-major axis. Longer-term variations are caused by interactions involving the perihelia and nodes of the planets Mercury, Venus, Earth, Mars, and Jupiter."
+    ]
+  },
+  {
     "title": "Food web",
     "cat": "Biology & Ecology",
     "terms": [
