@@ -1,5 +1,32 @@
 [
   {
+    "title": "Ammonoidea",
+    "cat": "Paleontology & Evolution",
+    "terms": [
+      [
+        "fossil",
+        "化石"
+      ],
+      [
+        "extinction",
+        "灭绝"
+      ],
+      [
+        "species",
+        "物种"
+      ]
+    ],
+    "paras": [
+      "Ammonoids are extinct, typically coiled-shelled cephalopods composing the subclass Ammonoidea. They are more closely related to living octopuses, squid, and cuttlefish (which compose the clade Coleoidea) than they are to nautiluses (family Nautilidae), which their shells resemble. The earliest ammonoids appeared during the Emsian stage of the Early Devonian, around 410-408 million years ago, with the last species vanishing during or soon after the Cretaceous–Paleogene extinction event approximately 66 million years ago. They are often called ammonites, which is most frequently used for members of the order Ammonitida, the only remaining group of ammonoids from the Jurassic up until their extinction.",
+      "Ammonoids exhibited considerable diversity over their evolutionary history, with over 10,000 species having been described. Ammonoids are excellent index fossils, and they have been frequently used to link rock layers in which a particular species or genus is found to specific geologic time periods. Their fossil shells usually take the form of planispirals, although some helically spiraled and nonspiraled forms (known as heteromorphs) have been found, primarily during the Cretaceous period. Because ammonites and their close relatives are extinct, little is known about their way of life. Their soft body parts are very rarely preserved in any detail. Nonetheless, much has been worked out by examining ammonoid shells and by using models of these shells in water tanks.",
+      "The name \"ammonite\", from which the scientific term is derived, was inspired by the spiral shape of their fossilized shells, which somewhat resemble tightly coiled rams' horns. Pliny the Elder (d. 79 AD near Pompeii) called fossils of these animals ammonis cornua (\"horns of Ammon\") because the Egyptian god Ammon (Amun) was typically depicted wearing rams' horns. Often, the name of an ammonite genus ends in -ceras, which is from ancient Greek κέρας (kéras) meaning \"horn\".",
+      "The Ammonoidea can be divided into six orders, listed here starting with the most primitive and going to the more derived:",
+      "In some classifications, these are left as suborders, included in only three orders: Goniatitida, Ceratitida and Ammonitida. The classification of ammonoids is based in part on the ornamentation and structure of the septa comprising their shells' gas chambers.",
+      "The Treatise on Invertebrate Paleontology (Part L, 1957) divides the Ammonoidea, regarded simply as an order, into eight suborders, the Anarcestina, Clymeniina, Goniatitina and Prolecanitina from the Paleozoic; the Ceratitina from the Triassic; and the Ammonitina, Lytoceratina and Phylloceratina from the Jurassic and Cretaceous. In subsequent taxonomies, these are sometimes regarded as orders within the subclass Ammonoidea.",
+      "Ammonoids are widely thought to have originated from straight-shelled (orthocone) \"nautiloids\" belong to Bactritida during the early Devonian (Emsian) around 409-408 million years ago, with transitional fossils showing the transition from a straight shell, to a curved (cyrtoconic) shell to a relaxed (gyroconic) spiral and finally to a tight spiral. The Late Devonian mass extinction (Kellwasser event) at the end of the Frasnian led to a dramatic decline in ammonoid diversity, with only a handful of lineages belong to Tornoceratina (a subgroup of Goniatites) surviving, becoming ancestral to all later ammonoids. Ammonoids rediversified during the following Famennian, which also saw the radical shift of the siphuncle from a lower (ventral) to upper (dorsal) position. Ammonites were nearly completely exterminated by the Hangenberg Event (end-Devonian mass extinction) at the end of the Devonian, with only a handful of lineages surviving, with one of the surviving goniatite lineages becoming ancestral to all post-early Carboniferous and later ammonoids. Ammonoids again rediversified during the Early Carboniferous. During the Carboniferous ammonoids underwent alternating periods of diversification and decline, and during the late Carboniferous ammonoid diversity became concentrated in a few geographical regions."
+    ]
+  },
+  {
     "title": "Origin of language",
     "cat": "History & Civilization",
     "terms": [
