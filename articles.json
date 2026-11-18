@@ -1,5 +1,30 @@
 [
   {
+    "title": "Lateralization of brain function",
+    "cat": "Neuroscience & Psychology",
+    "terms": [
+      [
+        "evidence",
+        "证据"
+      ],
+      [
+        "hypothesis",
+        "假说"
+      ]
+    ],
+    "paras": [
+      "The lateralization of brain function (or hemispheric dominance or lateralization) is the tendency for some neural functions or cognitive processes to be specialized to one side of the brain or the other. The median longitudinal fissure separates the human brain into two distinct cerebral hemispheres connected by the corpus callosum. Both hemispheres exhibit brain asymmetries in both structure and neuronal network composition associated with specialized function.",
+      "Lateralization of brain structures has been studied using both healthy and split-brain patients. However, there are numerous counterexamples to each generalization and each human's brain develops differently, leading to unique lateralization in individuals. This is different from specialization, as lateralization refers only to the function of one structure divided between two hemispheres. Specialization is much easier to observe as a trend, since it has a stronger anthropological history.",
+      "The best example of an established lateralization is that of Broca's and Wernicke's areas, where both are often found exclusively on the left hemisphere in the vast majority of people. Function lateralization, such as semantics, intonation, accentuation, and prosody, has since been called into question and largely been found to have a neuronal basis in both hemispheres. Another example is that each hemisphere in the brain tends to represent one side of the body. In the cerebellum, this is the ipsilateral side, but in the forebrain this is predominantly the contralateral side.",
+      "Language functions are lateralized to the left hemisphere in 96% of right-handers and 60% of left-handers.. The release of dopamine seems to regulate the activity in speech motor cortex and drive dominance in the left hemisphere.",
+      "Meaning of words, called lexicon, is processed bilaterally which has been tested through the word superiority effect. This finding is consistent with the distributed memory and knowledge systems required for lexical entries; however, each hemisphere's lexicon is considered unique since it may be organized and accessed differently. For example, the right hemisphere lacks letter recognition, and cannot judge lexical relationships such as superordinate words or antonyms.",
+      "The permitted organization of words, called grammar, is lateralized in only one hemisphere, typically the left one. These functions include \"understanding verbs, pluralizations, the possessive, and active-passive differences\" and understanding changes in meaning due to word order. However, the right hemisphere is able to judge when a sentence is grammatically correct, which may indicate that patterns of speech are learned by rote rather than applied through understanding rules.",
+      "Speech production and language comprehension are specialized in Broca's and Wernicke's areas respectively, which are located in the left hemisphere for 96% of right-handers and 70% of left-handers. However, there are some cases in which speech is produced in both hemispheres in split-brain patients; lateralization can also shift due to plasticity over time. The emotional content of language, called emotional prosody, is right-lateralized.",
+      "In writing, studies attempting to isolate the linguistic component of written language in terms of brain lateralization could not provide enough evidence of a difference in the relative activation of the brain hemispheres between left-handed and right-handed adults.",
+      "Sensory processing for the left and right sides of the body is often lateralized to the contralateral hemisphere due to nerve fiber decussation."
+    ]
+  },
+  {
     "title": "Burgess Shale",
     "cat": "Paleontology & Evolution",
     "terms": [
