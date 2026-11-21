@@ -1,5 +1,27 @@
 [
   {
+    "title": "Mimicry",
+    "cat": "Biology & Ecology",
+    "terms": [
+      [
+        "predator",
+        "捕食者"
+      ],
+      [
+        "species",
+        "物种"
+      ]
+    ],
+    "paras": [
+      "In evolutionary biology, mimicry is the evolved resemblance of an organism to something else, often another organism of a different species. Mimicry may evolve between different species, or between individuals of the same species. In the simplest case, as in Batesian mimicry, a mimic resembles a model, so as to deceive a dupe, all three being of different species. A Batesian mimic, such as a hoverfly, is harmless, while its model, such as a wasp, is harmful, and is avoided by the dupe, such as an insect-eating bird. Birds hunt by sight, so the mimicry in that case is visual, but in other cases mimicry may make use of any of the senses. Most types of mimicry, including Batesian, are deceptive, as the mimics are not harmful, but Müllerian mimicry, where different harmful species resemble each other, is honest, as when species of wasps and of bees all have genuinely aposematic warning coloration. More complex types may be bipolar, involving only two species, such as when the model and the dupe are the same; this occurs for example in aggressive mimicry, where a predator in wolf-in-sheep's-clothing style resembles its prey, allowing it to hunt undetected. Mimicry is not limited to animals; in Pouyannian mimicry, an orchid flower is the mimic, resembling a female bee, its model; the dupe is the male bee of the same species, which tries to copulate with the flower, enabling it to transfer pollen, so the mimicry is again bipolar. In automimicry, another bipolar system, model and mimic are the same, as when blue lycaenid butterflies have 'tails' or eyespots on their wings that mimic their own heads, misdirecting predator dupes to strike harmlessly. Many other types of mimicry exist.",
+      "Use of the word mimicry dates to 1637. It derives from the Greek term mimetikos, \"imitative\", in turn from mimetos, the verbal adjective of mimeisthai, \"to imitate\". \"Mimicry\" was first used in zoology by the English entomologists William Kirby and William Spence in 1823. Originally used to describe people, \"mimetic\" was used in zoology from 1851.",
+      "Aristotle wrote in his History of Animals that partridges use a deceptive distraction display to lure predators away from their flightless young:",
+      "When a man comes by chance upon a young brood [of partridges], and tries to catch them, the hen-bird rolls in front of the hunter, pretending to be lame: the man every moment thinks he is on the point of catching her, and so she draws him on and on, until every one of her brood has had time to escape; hereupon she returns to the nest and calls the young back.",
+      "In 1817, William Kirby and William Spence, in their book An Introduction to Entomology, used the term \"mimicry\" informally to depict the way that the structure and coloration of some insects resembled objects in their environments:",
+      "A jumping bug, very similar to the one figured by Schellenberg, also much resembles the lichens of the oak on which I took it. The spectre tribe (Phasma, Licht.) go still further in this mimicry, representing a small branch with its spray."
+    ]
+  },
+  {
     "title": "Neuron",
     "cat": "Neuroscience & Psychology",
     "terms": [
