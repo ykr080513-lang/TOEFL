@@ -1,5 +1,32 @@
 [
   {
+    "title": "El Niño–Southern Oscillation",
+    "cat": "Climate History",
+    "terms": [
+      [
+        "climate",
+        "气候"
+      ],
+      [
+        "atmosphere",
+        "大气层"
+      ],
+      [
+        "precipitation",
+        "降水"
+      ]
+    ],
+    "paras": [
+      "El Niño–Southern Oscillation (ENSO) is a global climate phenomenon that manifests as fluctuations in sea surface temperatures over the tropical Pacific Ocean. The warming phase of the sea surface temperature is known as \"El Niño\" and the cooling phase as \"La Niña\". It affects the climate of much of the tropics and subtropics, and has links (teleconnections) to higher-latitude regions of the world. The Southern Oscillation is the accompanying atmospheric oscillation, which is coupled with the sea temperature change. Numerous atmospheric characteristics respond to the oscillation including wind, surface air pressure and cloudiness.",
+      "The switching between El Niño, La Niña and neutral states has an irregular pattern but cycles approximately every two to seven years with varying intensity. The strength of the phenomenon tends to peak in the northern hemisphere winter, though regional impacts may peak at different times. The occurrence of ENSO is not easily predictable but it is monitored carefully by many weather organisations.",
+      "El Niño and La Niña affect the global climate and disrupt normal weather patterns, which can lead to intense storms in some places and droughts in others. El Niño events cause short-term (approximately one year in length) spikes in global average surface temperature, while La Niña events cause short term surface cooling. Therefore, the relative frequency of El Niño compared to La Niña events can affect global temperature trends on timescales of around ten years. The countries most affected by ENSO are developing countries that are bordering the Pacific Ocean and dependent on agriculture and fishing.",
+      "In climate change science, ENSO is known as one of the internal climate variability phenomena. Future trends in ENSO due to climate change are uncertain, although climate change exacerbates the effects of droughts and floods associated with ENSO. The IPCC Sixth Assessment Report summarized the scientific knowledge in 2021 for the future of ENSO as follows: \"In the long term, it is very likely that the precipitation variance related to El Niño–Southern Oscillation will increase\".",
+      "A key mechanism of ENSO is the Bjerknes feedback (named after Jacob Bjerknes in 1969) in which the atmospheric changes alter the sea temperatures that, in turn, alter the atmospheric winds in a positive feedback. Weaker easterly trade winds result in a surge of warm surface waters to the east and reduced ocean upwelling on the equator. In turn, this leads to warmer sea surface temperatures (called El Niño), a weaker Walker circulation (an east—west overturning circulation in the atmosphere) and even weaker trade winds. Ultimately, the warm waters in the western tropical Pacific are depleted enough so that conditions return to normal. The exact mechanisms that cause the oscillation are unclear and are being studied.",
+      "The El Niño–Southern Oscillation is a single climate phenomenon that recurs in three phases: Neutral, La Niña or El Niño. La Niña and El Niño are opposite phases in the oscillation which are deemed to occur when specific ocean and atmospheric conditions are reached or exceeded.",
+      "The warming phase of the sea surface temperature is known as \"El Niño\", and its cooling phase as \"La Niña\". The \"Southern Oscillation\" is the oscillation in surface air pressure between the tropical eastern Pacific Ocean waters and the tropical western Pacific Ocean waters."
+    ]
+  },
+  {
     "title": "Mimicry",
     "cat": "Biology & Ecology",
     "terms": [
