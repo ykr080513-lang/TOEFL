@@ -1,5 +1,24 @@
 [
   {
+    "title": "Maunder Minimum",
+    "cat": "Climate History",
+    "terms": [
+      [
+        "volcanic",
+        "火山的"
+      ]
+    ],
+    "paras": [
+      "The Maunder Minimum, also known as the \"prolonged sunspot minimum\", was a period around 1645 to 1715 during which sunspots became exceedingly rare. During the 28-year period 1672–1699 within the minimum, observations revealed fewer than 50 sunspots. This contrasts with the typical 40,000–50,000 sunspots seen in modern times over a similar timespan.",
+      "The Maunder Minimum was first noted by Gustav Spörer in publications in 1887 and 1889, work that was relayed to the Royal Astronomical Society in London, and then expanded on, by solar astronomers Edward Walter Maunder (1851–1928), and his wife Annie Russell Maunder (1868–1947), who also studied how sunspot latitudes changed with time. Two papers were published in Edward Maunder's name in 1890 and 1894, and he cited the two earlier papers written by Gustav Spörer. Because Annie Maunder had not received a university degree, restrictions at the time caused her contribution not to be publicly recognized. The term Maunder Minimum was popularised by John A. Eddy, who published a landmark paper in Science in 1976.",
+      "The Maunder Minimum occurred within the Little Ice Age, a long period (c. 1300 – c. 1850) of lower-than-average European temperatures. The reduced solar activity may have contributed to the climatic cooling, although the cooling began before the solar minimum and its primary cause is believed to be volcanic activity.",
+      "The Maunder Minimum occurred between 1645 and 1715 when very few sunspots were observed. That was not because of a lack of observations, as during the 17th century, Giovanni Domenico Cassini carried out a systematic program of solar observations at the Paris Observatory, thanks to the astronomers Jean Picard and Philippe de La Hire. Johannes Hevelius also performed observations on his own. Here is the total of sunspots recorded, by example, in the decennial years (omitting Wolf numbers):",
+      "During the Maunder Minimum enough sunspots were sighted that 11-year cycles could be determined from the count. The maxima occurred in 1676–1677, 1684, 1695, 1705 and 1718. Sunspot activity was then concentrated in the southern hemisphere of the Sun, except for the last cycle when the sunspots appeared in the northern hemisphere. According to Spörer's law, spots appear at high latitudes at the start of a cycle, subsequently moving to lower latitudes until they average about latitude 15° at solar maximum. The average then continues to drift lower to about 7° and after that, while spots of the old cycle fade, new cycle spots start appearing again at high latitudes. The visibility of these spots is also affected by the velocity of the Sun's surface rotation at various latitudes:",
+      "Visibility is somewhat affected by observations being done from the ecliptic. The ecliptic is inclined 7° from the plane of the Sun's equator (latitude 0°).",
+      "In his highly influential paper, John A. Eddy discussed solar eclipses during the Maunder Minimum. From text of eye-witness reports of events in 1652, 1706 and 1715, he concluded that the solar corona was weak in intensity and unstructured during the Maunder Minimum. However, no graphical evidence of these events was available to him. A few representations of these events were available in political cartoons and on coins and medals but these were, almost certainly, not drawn by observers who had actually witnessed the events. There were two prints made by witnesses of the 1706 event but these were made for commercial reasons and not by trained astronomers. Then in 2012 Markus Heinz of the Berlin State Library discovered two paintings of the 1706 eclipse that were known to have existed but were thought lost. They were painted by a trained and skilful astronomer and observer, Maria Clara Eimmart, the daughter of the director of an observatory housed on a bastion of the walls of Nuremberg Castle. The paintings were in excellent agreement with detailed text description of the event by Johann Philipp Wurzelbau (also in Nuremberg) and by French mathematician and cartographer Jean de Clapiès and astronomer François de Plantade who observed the same event from the Babote Tower in Montpellier. This confirmed Eddy's conclusion about a weak and structureless corona during the Maunder minimum and agreed with simulations of the structureless F-corona, with no detected K-corona that is ordered by the magnetic field, as has been modelled for low coronal magnetic flux. A full discussion of these observations of the Maunder minimum corona and how the K-corona had partially returned by the time of the 1715 event is given by Hayakawa et al. (2020)."
+    ]
+  },
+  {
     "title": "Permafrost",
     "cat": "Biology & Ecology",
     "terms": [
