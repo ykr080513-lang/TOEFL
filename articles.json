@@ -1,5 +1,31 @@
 [
   {
+    "title": "Geologic time scale",
+    "cat": "Geology & Earth Science",
+    "terms": [
+      [
+        "crust",
+        "地壳"
+      ],
+      [
+        "sediment",
+        "沉积物"
+      ]
+    ],
+    "paras": [
+      "The geologic time scale or geological time scale describes how geologic time is divided into standardised intervals. It uses the rock record together with the principles of chronostratigraphy to place rock sequences into their relative age positions, and geochronology techniques, such as radiometric dating, to precisely date the boundaries between them. The geologic time scale is used primarily by those in the Earth sciences (including geologists, paleontologists, geophysicists, geochemists, and paleoclimatologists) to describe the timing and relationships of events in geologic history. The time scale has been developed through the study of rock layers and the observation of their relationships and identifying features such as lithologies, paleomagnetic properties, and fossils.",
+      "The definition of standardised international units of geological time is the responsibility of the International Commission on Stratigraphy (ICS), a constituent body of the International Union of Geological Sciences (IUGS), whose primary objective is to precisely define global chronostratigraphic units of the International Chronostratigraphic Chart (ICC) that are used to define divisions of geological time. The chronostratigraphic divisions are in turn used to define geochronologic units.",
+      "The geologic time scale is a way of representing deep time based on events that have occurred throughout Earth's history, a time span of about 4.54 ± 0.05 billion years. It arranges the rock record in chronological order by observing fundamental changes in stratigraphy that correspond to major geological or paleontological events. It combines the disciplines of chronostratigraphy, which studies the relationships between rock sequences to determine their relative ages, and geochronology, the science of dating rocks and other geological materials.",
+      "Chronostratigraphy is the branch of stratigraphy that organises all the rocks of the Earth's crust into groups, known as chronostratigraphic units, based on their relative ages. A chronostratigraphic unit includes all rock sequences globally that were deposited during a particular time interval.",
+      "Chronostratigraphy uses several key principles to determine the relative relationships of rocks and thus their chronostratigraphic position in the rock record.",
+      "The law of superposition that states that, in undeformed stratigraphic sequences, the oldest strata will lie at the bottom of the sequence, while newer material stacks upon the surface.",
+      "The principle of original horizontality that states layers of sediments will originally be deposited horizontally under the action of gravity. However, it is now known that not all sedimentary layers are deposited purely horizontally, but this principle is still a useful concept.",
+      "The principle of lateral continuity that states layers of sediments extend laterally in all directions until either thinning out or being cut off by a different rock layer, i.e. they are laterally continuous. Layers do not extend indefinitely; their limits are controlled by the amount and type of sediment in a sedimentary basin, and the geometry of that basin.",
+      "The principle of cross-cutting relationships that states a rock that cuts across another rock must be younger than the rock it cuts across.",
+      "The law of included fragments that states small fragments of one type of rock that are embedded in a second type of rock must have formed first, and were included when the second rock was forming."
+    ]
+  },
+  {
     "title": "Maunder Minimum",
     "cat": "Climate History",
     "terms": [
